@@ -11,10 +11,10 @@
 		</nav>
 	</div>
 	<div class="thirteen columns offset-by-three content">
-		<div style="box-shadow: 0px 0px 5px #ddd; padding:10px;background:#fff;">
+		<div class="article page">
 			<header><h1><?php echo $first->title_out; ?></h1></header>
 			<hr class="large">
-			<div class="doc-section" id="intro">
+			<div class="doc-section body editable" id="intro" data-button-class="all">
 				<?php echo $first->content_out; ?>
 			</div>
 		</div>
