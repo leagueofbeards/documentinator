@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="plugin">
+	<name>Google Code Prettify</name>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	<url>http://code.google.com/p/google-code-prettify/</url>
+	<author url="https://github.com/organizations/leagueofbeards">League of Beards</author>
+	<version>1.0</version>
+	<description><![CDATA[User Google Code Prettify to style code blocks.]]></description>
+	<copyright>2012</copyright>
+</pluggable>

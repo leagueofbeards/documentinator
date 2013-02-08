@@ -10,7 +10,8 @@ class Doco extends Theme
 		Format::apply_with_hook_params( 'more', 'post_content_out', 'more' );
 		Format::apply( 'autop', 'post_content_excerpt' );
 		Format::apply_with_hook_params( 'more', 'post_content_excerpt', 'more',60, 1 );
-		$this->assign( 'user', $user );		
+		$this->assign( 'user', $user );
+		$this->assign( 'pages', Posts::get(array('nolimit' => true, 'orderby' => 'id ASC')) );
 	}
 
 	public function act_display_home( $user_filters = array() ) {		
