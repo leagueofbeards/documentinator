@@ -7,6 +7,23 @@ body {
 	background:#f1f1f1;
 }
 
+[class^="icon-"] {
+	color: #111;
+	margin-top: 1px;
+	margin-right: 3px;
+	display:inline-block;
+	font-family: 'Pictos Custom';
+	-webkit-font-smoothing: antialiased;
+	vertical-align: middle;
+	font-style: normal;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+[class^="icon-"]:last-child {
+	*margin-left: 0;
+}
+
 	div.container {
 		padding-top: 60px; 
 	}	
@@ -45,24 +62,50 @@ body {
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-weight: bold;
 	}
-	
+		h5 {
+			width: 100%;
+			float:left;
+			margin-bottom: 5px;
+		}
+		
+		i#add_contributor {
+			float:right;
+			margin-top: 4px !important;
+			margin-right: 0px;
+		}
+		
+		i#add_contributor a {
+			line-height: 15px;
+			padding: 5px 5px 2px;
+			border-radius: 3px;
+			text-decoration: none;
+			color: #fff;
+			font-weight: normal;
+			font-size: 13px;
+			background: #ccc;
+		}
+			i#add_contributor a:hover {
+				background: #aaa;
+			}
 	header h1 {
 		font-size: 52px;
 		line-height: 61px;
 		letter-spacing: -1px;
 		font-weight: normal;
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		padding: 10px 20px 0px;
 		}
 	hr.large {
 		border: none;
 		height: 8px;
 		background: #ebebeb;
-		margin: 25px 0; 
+		margin: 5px 20px; 
 	}
 	
 	div.doc-section {
 		margin: 30px 0;
 		outline: none;
+		padding: 0px 20px;
 	}
 		.doc-section p {
 			line-height: 1.7em;
@@ -111,16 +154,6 @@ body {
 		text-decoration: underline;
 	}
 
-
-	.resize {
-		position: fixed;
-		bottom: 0;
-		right: 0;
-		height: 80px;
-		width: 80px;
-		background: url(images/resize.png); }
-
-
 	img {
 		max-width: 100%;
 		height: auto; }
@@ -140,8 +173,6 @@ body {
 		border-radius: 5px;
 		padding: 10px;
 		margin-bottom: 20px;
-		margin-left: 30px;
-		margin-right: 30px;
 		word-wrap: break-word;
 	}
 
@@ -151,9 +182,100 @@ body {
 
 	.page {
 		box-shadow: 0px 0px 5px #ddd;
-		padding:10px;
 		background:#fff;
+		padding-bottom: 5px;
 	}
+	
+	.contributor_link {
+		width: 100%;
+		text-align: center;
+		padding: 5px 0px;
+		color: #fff;
+		background: #ccc;
+		border-radius: 5px;
+	}
+		.contributor_link a, .contributor_link a i {
+			color: #fff;
+			font-weight: bold;
+			text-decoration: none;
+		}
+			.contributor_link a i {
+				font-weight: normal;
+			}
+
+		#participating {
+			width: 100%;
+		}
+
+		#participating li {
+			float: left;
+			width: 100%;
+			padding: 10px 0px 10px 0px;
+			margin: 0px;
+		}
+
+		#participating li + li {
+			border-top: 1px solid #ddd;
+		}
+
+		.gravatar {
+			float:left;
+			border-radius: 3px;
+			width: 20px;
+			height: 20px;
+			margin-right: 5px;
+		}
+		
+		.controls {
+			float: right;
+		}
+			.controls i {
+				font-size: 13px;
+				color: #ccc;
+			}
+				.controls i:hover {
+					color: #aaa;
+					cursor: pointer;
+				}
+				
+				.controls i.approved {
+					color: #008100;
+					cursor:auto;
+				}
+				
+				.controls i.denied {
+					color: #830000;
+					cursor:auto;
+				}
+				
+				.controls i.bigger {
+					font-size: 15px;
+					padding-right: 2px;
+					cursor:auto;
+					color: #aaa;
+				}
+
+		a.btn {
+			text-decoration: none;
+		}
+		
+		.add_doc {
+			text-align: center;
+			float:left;
+			border: 3px dashed #aaa;
+			border-radius: 5px;
+			padding: 20px 30px;
+		}
+			.add_doc p {
+				margin:0px;
+				padding:0px;
+			}
+			.add_doc p i a {
+				text-decoration: none;
+				color: #aaa;
+				line-height: 100px;
+				font-size: 100px;
+			}
 
 	/* Mobile */
 	@media only screen and (max-width: 767px) {

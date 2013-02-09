@@ -7,6 +7,9 @@
  * @package Habari
  */
 
+// error_reporting(E_STRICT);
+// define('DEBUG', TRUE);
+
 /**
  * Define the constant HABARI_PATH.
  * The path to the root of this Habari installation.

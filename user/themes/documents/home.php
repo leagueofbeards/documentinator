@@ -1,23 +1,23 @@
+<?php namespace habari; ?>
 <?php $theme->display('header'); ?>
 <div class="container">
-	<div class="three columns sidebar">
-		<nav>
-			<h3 id="logo">Doco</h3>
-			<ul>
-				<?php foreach( $pages as $page ) { ?>
-					<li><a href="<?php echo $page->permalink; ?>"><?php echo $page->title; ?></a></li>
-				<?php } ?>
-			</ul>
-		</nav>
-	</div>
+	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
-		<div class="article page">
-			<header><h1><?php echo $first->title_out; ?></h1></header>
-			<hr class="large">
-			<div class="doc-section body editable" id="intro" data-button-class="all">
-				<?php echo $first->content_out; ?>
+		<?php if( isset($docs) ) { ?>
+			<?php foreach( $docs as $doc ) { ?>
+				<div id="doc-<?php echo $doc->id; ?>" class="document grid_2 columns">
+					<a href="<?php URL::out('display_document', array('slug' => $doc->slug)); ?>" title=""><?php echo $doc->title; ?></a>
+				</div>
+			<?php } ?>
+			<div class="grid_2 columns add_doc">
+				<p><i class="icon-add"><a href="#new_doc" title="Add a new Document" role="button" data-toggle="modal">+</a></i></p>
+				<p>Add a Document</p>
 			</div>
-		</div>
+		<?php } else { ?>
+			<div class="add_doc">
+				<p>Add a Document</p>
+			</div>
+		<?php } ?>
 	</div>
 </div>
 <?php $theme->display('footer'); ?>

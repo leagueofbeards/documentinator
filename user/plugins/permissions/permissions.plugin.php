@@ -55,8 +55,7 @@ class Permissions extends Plugin
 		$types = array_intersect_key(
 			$types,
 			array(
-				'section'	=>	1,
-				'chapter'	=>	1,
+				'document'	=>	1,
 				'page'		=>	1,
 				'note'		=>	1,
 			)
