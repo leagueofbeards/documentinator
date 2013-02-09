@@ -5,7 +5,7 @@ class Pages extends Posts
 {
 	public static function get($paramarray = array()) {
 		$defaults = array(
-			'content_type' => 'page',
+			'content_type' => 'docpage',
 			'fetch_class' => 'Page',
 		);
 		

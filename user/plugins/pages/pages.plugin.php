@@ -1,32 +1,30 @@
 <?php
 namespace Habari;
 
-define('TYPE_DOCUMENTATION', 1);
-define('TYPE_GENERIC', 2);
-
-class DocumentsPlugin extends Plugin
+class PagesPlugin extends Plugin
 {
 	public function action_init() {
-		DB::register_table( 'documents' );
+		DB::register_table( 'pages' );
 	}
 	
 	public function action_plugin_activation( $plugin_file ) {
-		Post::add_new_type( 'document' );
-		$this->create_documents_table();
+		Post::add_new_type( 'docpage' );
+		$this->create_pages_table();
 	}
 
 	public function action_plugin_deactivation ( $file='' ) {}
 
-	private function create_documents_table() {
-		$sql = "CREATE TABLE {\$prefix}documents (
+	private function create_pages_table() {
+		$sql = "CREATE TABLE {\$prefix}pages (
 				id int unsigned NOT NULL AUTO_INCREMENT,
 				post_id int unsigned NOT NULL,
 				client_id int unsigned NOT NULL,
-				type int unsigned NOT NULL,
+				document_id int unsigned NOT NULL,
 				approved int unsigned NOT NULL,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `post_id` (`post_id`),
-				KEY `client_id` (`client_id`)
+				KEY `client_id` (`client_id`),
+				KEY `document_id` (`document_id`)
 				) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;";
 
 		DB::dbdelta($sql);
@@ -34,36 +32,46 @@ class DocumentsPlugin extends Plugin
 
 	public function filter_posts_get_paramarray($paramarray) {
 		$queried_types = Posts::extract_param($paramarray, 'content_type');
-		if($queried_types && in_array('document', $queried_types)) {
-			$paramarray['post_join'][] = '{documents}';
+		if($queried_types && in_array('docpage', $queried_types)) {
+			$paramarray['post_join'][] = '{pages}';
 			$default_fields = isset($paramarray['default_fields']) ? $paramarray['default_fields'] : array();
-			$default_fields['{documents}.client_id'] = '';
-			$default_fields['{documents}.type'] = TYPE_DOCUMENTATION;
+			$default_fields['{pages}.client_id'] = '';
+			$default_fields['{pages}.document_id'] = 0;
 			$paramarray['default_fields'] = $default_fields;
 		}
 		return $paramarray;
 	}
 
-	public function filter_post_schema_map_document($schema, $post) {
-		$schema['documents'] = $schema['*'];
-		$schema['documents']['post_id'] = '*id';
+	public function filter_post_schema_map_docpage($schema, $post) {
+		$schema['pages'] = $schema['*'];
+		$schema['pages']['post_id'] = '*id';
 		return $schema;		
 	}
 
 	public function filter_default_rewrite_rules( $rules ) {
-		$this->add_rule('"doc"/slug', 'display_document');
-		
+		$rules[] = array(
+			'name'			=>	'display_page',
+			'parse_regex'	=>	'%^doc/(?P<document>[^/]*)?/?(?P<slug>[^/]*)?/?$%i',
+			'build_str'		=>	'doc/{$document}/{$slug}',
+			'handler'		=>	'PluginHandler',
+			'action'		=>	'display_page',
+			'priority'		=>	100,
+			'description' => 'Display time tracking for the entire shebang.',
+		);
+
+
 		return $rules;
 	}
 
-	public function theme_route_display_document($theme) {
-		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
+	public function theme_route_display_page($theme) {
+		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['document']) );
+		$theme->page = Page::get( array('id' => $theme->matched_rule->named_arg_values['slug']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id) );
 		
-		$theme->display( 'document.single' );
+		$theme->display( 'page.single' );
 	}
 
-	public function action_auth_ajax_create_document($data) {
+	public function action_auth_ajax_create_page($data) {
 		$vars = $data->handler_vars;
 		$user = User::identify();
 		
@@ -76,7 +84,7 @@ class DocumentsPlugin extends Plugin
 					'status'		=>	Post::status('published'),
 					'content_type'	=>	Post::type('document'),
 					'client_id'		=>	$vars['client_id'] ? $vars['client_id'] : '',
-					'type'			=>	$vars['type']
+					'document_id'	=>	$vars['document_id']
 				);
 		
 		try {

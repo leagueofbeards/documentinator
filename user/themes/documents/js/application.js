@@ -1,11 +1,20 @@
 $(document).ready(function() {
-	prettyPrint();
+	$('.editable').keydown(function() {
+		$(this).stopTime();
+		$(this).oneTime(1000, function() { stylePreview(); });
+	});
+
 	
 	$('#add_document').click(function() {
 		var url  = $('#new_document').attr('action');
 		var args = $('#new_document').serialize();
 		$.post( url, args, handleResponse );
-		
+		return false;
+	});
+			
+	$("#save").click(function (e) {
+		var content = $('.editable').html();
+		console.log(content);
 		return false;
 	});
 });
@@ -47,4 +56,23 @@ var handleResponse = function(data, callback) {
 	}
 	
 	all = true;
+}
+
+var styleCode = function() {
+	var a = false;
+
+	$('pre').parent().each(function() {
+		if (!$(this).hasClass("prettyprint")) {
+			$(this).addClass("prettyprint");
+			a = true
+		}
+	});
+	
+	if (a) { prettyPrint() } 
+}
+
+var stylePreview = function() {
+	$('.editable pre').each(function() {
+		$(this).html( prettyPrintOne($(this).html()) );
+	});
 }

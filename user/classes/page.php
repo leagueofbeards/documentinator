@@ -11,7 +11,7 @@ class Page extends Post
 	
 	public static function get($paramarray = array()) {
 		$defaults = array(
-			'content_type' => 'page',
+			'content_type' => 'docpage',
 			'fetch_fn' => 'get_row',
 			'limit' => 1,
 			'fetch_class' => 'Page',
