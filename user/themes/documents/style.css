@@ -314,6 +314,7 @@ i {
 	}
 
 	#editor {
+		display: none;
 		z-index: 1;
 		background: #fff;
 		position:fixed;

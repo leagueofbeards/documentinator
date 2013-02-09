@@ -1,4 +1,12 @@
 $(document).ready(function() {
+	$(".page").mouseenter(function() {
+		$('#editor').fadeIn();
+	});
+	
+	$('.page').mouseleave(function() {
+		$(this).oneTime(1000, function() { $('#editor').fadeOut(); });
+	});
+	
 	$('.editable').keydown(function() {
 		$(this).stopTime();
 		$(this).oneTime(1000, function() { stylePreview(); });
