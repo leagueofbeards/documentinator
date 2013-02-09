@@ -4,6 +4,19 @@
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
 		<div id="editor">
+			<div id="save">
+				<a class="save" href="#"><i class="icon-save">s</i></a>
+			</div>
+			<a id="heading" href="#"><strong>H</strong></a>
+			<div id="submenu">
+				<ul>
+					<li><a href="#" class="heading" data-level="H1">h1</a></li>
+					<li><a href="#" class="heading" data-level="H2">h2</a></li>
+					<li><a href="#" class="heading" data-level="H3">h3</a></li>
+					<li><a href="#" class="heading" data-level="H4">h4</a></li>
+					<li><a href="#" class="heading" data-level="H5">h5</a></li>
+				</ul>
+			</div>			
 			<a id="bold" href="#"><strong>b</strong></a>
 			<a id="italic" href="#"><i>i</i></a>
 			<a id="underline" href="#"><u>u</u></a>

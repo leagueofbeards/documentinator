@@ -199,6 +199,7 @@ i {
 		box-shadow: 0px 0px 5px #ddd;
 		background:#fff;
 		padding-bottom: 5px;
+		min-height: 300px;
 	}
 	
 	.contributor_link {
@@ -295,6 +296,7 @@ i {
 	.doc_container {
 		text-align: center;
 	}
+	
 	.document {
 		text-align: center;
 		float:left;
@@ -339,7 +341,58 @@ i {
 			}
 			
 			#editor a i {
-				padding-left: 4px;
+				padding-left: 2px;
+			}
+
+		#submenu {
+			display:none;
+			position:fixed;
+			margin-left: -30px;
+			margin-top: -33px;
+			background: #eee;
+			padding: 0px;
+			height: auto;
+			border: 1px solid #ddd;
+		}
+			#submenu ul {
+				margin-bottom: 0px;
+				padding-bottom:0px;
+			}
+				#submenu ul li {
+					margin-bottom:0px;
+				}
+				
+			#submenu a {
+				padding: 5px 5px;
+				margin:0px;
+			}
+			#submenu a:hover {
+				background: #ddd;
+			}
+			
+			.heading a:hover a#heading {
+				background: #eee;
+			}
+
+		#save {
+			position:fixed;
+			margin-top: -37px;
+			margin-left: 0px;			
+			background: #aaa;
+		}
+			#save a:hover {
+				background: #aaa;				
+			}
+			#save.enabled {
+				background: #008200;
+			}
+				.enabled a:hover {
+					background: #064b06 !important;
+				}
+			
+			#editor .icon-save {
+				color: #fff;
+				height: 18px;
 			}
 
 	/* Mobile */

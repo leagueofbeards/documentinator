@@ -16,6 +16,23 @@ $(function() {
 		$('.editable').focus();
 		return false;
 	});
+
+	$('#heading').hover(function() {
+		$('#submenu').fadeIn();
+	});
+
+	$('#submenu').mouseleave(function() {
+		$(this).stopTime();
+		$(this).oneTime(3000, function() { $('#submenu').fadeOut(); });
+	})
+
+	$('.heading').click(function() {
+		var which = $(this).data('level');
+		document.execCommand('heading', false, which);
+		$(this).stopTime();
+		$(this).oneTime(500, function() { $('#submenu').fadeOut(); });
+		return false;
+	});
 	
 	$('#code').click(function() {
 		document.execCommand('insertHTML', false, '<pre class="prettyprint"></pre>');

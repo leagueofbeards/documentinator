@@ -3,15 +3,11 @@ $(document).ready(function() {
 		$('#editor').fadeIn();
 	});
 	
-	$('.page').mouseleave(function() {
-		$(this).oneTime(1000, function() { $('#editor').fadeOut(); });
-	});
-	
 	$('.editable').keydown(function() {
+		$('#save').addClass('enabled');
 		$(this).stopTime();
-		$(this).oneTime(1000, function() { stylePreview(); });
+		$(this).oneTime(2000, function() { stylePreview(); });
 	});
-
 	
 	$('#add_document').click(function() {
 		var url  = $('#new_document').attr('action');
