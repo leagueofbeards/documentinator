@@ -3,6 +3,9 @@
 <div class="container">
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
+		<div id="new_page">
+			<a class="new_page" href="#"><i class="icon-page">n</i></a>
+		</div>
 		<div id="editor">
 			<div id="save">
 				<a class="save" href="#"><i class="icon-save">s</i></a>
@@ -25,11 +28,12 @@
 		<div class="article page">
 			<header><h1><?php echo $document->title_out; ?></h1></header>
 			<hr class="large">
-			<div class="doc-section body editable" id="intro" contenteditable="true" designmode="on">
+			<form id="update_doc" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'update_document', 'id' => $document->id))); ?>">
+			<div class="doc-section body editable" id="intro" name="content" contenteditable="true" designmode="on">
 				<?php echo $document->content_out; ?>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
-
 <?php $theme->display('footer'); ?>

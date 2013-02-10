@@ -395,6 +395,28 @@ i {
 				height: 18px;
 			}
 
+		#new_page {
+			position:fixed;
+			margin-left: -29px;
+			margin-top: 25px;
+			background: #aaa;
+			border: 1px solid #ddd;
+		}
+			#new_page a {
+			text-decoration: none;
+			display:block;
+			padding: 5px;
+			text-align: center;
+			background:#fff;
+		}
+			#new_page a:hover {
+				background: #eee;
+			}
+			
+			#new_page a i {
+				padding-left: 4px;
+			}
+
 	/* Mobile */
 	@media only screen and (max-width: 767px) {
 		header h1 { font-size: 34px; line-height: 37px; }

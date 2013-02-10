@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="plugin">
+	<name>Common Methods</name>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	<author url="http://myintarweb.com/">Myintarweb, LLC.</author>
+	<version>1.0</version>
+	<url>http://myintarweb.com/</url>
+	<description><![CDATA[Code that powers some of the more interesting parts of the League of Beards site.]]></description>
+	<copyright>2012</copyright>	
+</pluggable>

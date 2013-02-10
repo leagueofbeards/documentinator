@@ -93,5 +93,24 @@ class DocumentsPlugin extends Plugin
 		$ar->html( '.content', '#' );
 		$ar->out();
 	}
+	
+	public function action_auth_ajax_update_document($data) {
+		$vars = $data->handler_vars;
+		$document = Document::get( array('id' => $vars['id']) );
+		
+		$document->content = $vars['content'];
+		
+		try {		
+			$document->update();
+			$status = 200;
+			$message = $document->title . ' was updated.';
+		} catch( Exception $e ) {
+			$status = 401;
+			$message = 'There was an error updating' . $document->title;
+		}
+
+		$ar = new AjaxResponse( $status, $message, null );
+		$ar->out();
+	}
 }
 ?>

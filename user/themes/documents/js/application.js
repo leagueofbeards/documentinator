@@ -18,7 +18,29 @@ $(document).ready(function() {
 			
 	$("#save").click(function (e) {
 		var content = $('.editable').html();
-		console.log(content);
+		var data = $('#update_doc').serializeArray();
+		var objContent = new Object();
+		objContent.content = content;
+		var url = $('#update_doc').attr('action');
+		$.post( url, objContent, handleResponse  );
+		return false;
+	});
+
+	$('body').on('click', 'a.wsse', function() {
+		$(this).querystring(DI.WSSE);
+	});
+
+	window.setInterval(function() {
+		var dep = $.get(DI.WSSE_update);
+		dep.done(function(response) {
+			$.extend(DI.WSSE, response);
+		});
+	}, 60000);
+
+	$('a.wsse').on('click', function() {
+		var url = $(this).attr('href');
+		$.post( url, null, handleAjaxResponse );
+		
 		return false;
 	});
 });
@@ -32,7 +54,7 @@ var handleResponse = function(data, callback) {
 		}
 		
 		if(data.message != undefined && data.message != '') {
-			$('.error').html( data.message ).fadeIn();
+			displayMessage( data.message )
 		}
 		
 		if(data.habari_callback != undefined) {
@@ -48,9 +70,6 @@ var handleResponse = function(data, callback) {
 				semaphore++
 				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function(){
 					semaphore--;
-					if(all && semaphore == 0 && typeof callback == "function") {
-						callback();
-					}
 				}).fadeIn();
 			}
 			else {
@@ -79,4 +98,8 @@ var stylePreview = function() {
 	$('.editable pre').each(function() {
 		$(this).html( prettyPrintOne($(this).html()) );
 	});
+}
+
+var displayMessage = function(message) {
+	human_msg.display_msg( message );
 }
