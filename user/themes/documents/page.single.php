@@ -26,11 +26,11 @@
 			<a id="code" href="#"><i class="icon-code">P</i></a>
 		</div>
 		<div class="article page">
-			<header><h1 contenteditable="true"><?php echo $document->title_out; ?></h1></header>
+			<header><h1 contenteditable="true"><?php echo $page->title_out; ?></h1></header>
 			<hr class="large">
-			<form id="update_doc" class="inplace" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'update_document', 'id' => $document->id))); ?>">
+			<form id="update_page" class="inplace" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'update_page', 'id' => $page->id))); ?>">
 			<div class="doc-section body editable" id="intro" name="content" contenteditable="true" designmode="on">
-				<?php echo $document->content_out; ?>
+				<?php echo $page->content_out; ?>
 			</div>
 			</form>
 		</div>

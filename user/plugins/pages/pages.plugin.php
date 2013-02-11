@@ -21,6 +21,7 @@ class PagesPlugin extends Plugin
 				client_id int unsigned NOT NULL,
 				document_id int unsigned NOT NULL,
 				approved int unsigned NOT NULL,
+				name varchar(255) NULL,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `post_id` (`post_id`),
 				KEY `client_id` (`client_id`),
@@ -37,6 +38,8 @@ class PagesPlugin extends Plugin
 			$default_fields = isset($paramarray['default_fields']) ? $paramarray['default_fields'] : array();
 			$default_fields['{pages}.client_id'] = '';
 			$default_fields['{pages}.document_id'] = 0;
+			$default_fields['{pages}.approved'] = 0;
+			$default_fields['{pages}.name'] = '';
 			$paramarray['default_fields'] = $default_fields;
 		}
 		return $paramarray;
@@ -49,24 +52,21 @@ class PagesPlugin extends Plugin
 	}
 
 	public function filter_default_rewrite_rules( $rules ) {
-		$rules[] = array(
-			'name'			=>	'display_page',
-			'parse_regex'	=>	'%^doc/(?P<document>[^/]*)?/?(?P<slug>[^/]*)?/?$%i',
-			'build_str'		=>	'doc/{$document}/{$slug}',
-			'handler'		=>	'PluginHandler',
-			'action'		=>	'display_page',
-			'priority'		=>	100,
-			'description' => 'Display time tracking for the entire shebang.',
-		);
-
-
+		$this->add_rule('"d"/slug/"new"', 'display_create');
+		$this->add_rule('"d"/slug/page', 'display_docpage');
 		return $rules;
 	}
 
-	public function theme_route_display_page($theme) {
-		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['document']) );
-		$theme->page = Page::get( array('id' => $theme->matched_rule->named_arg_values['slug']) );
-		$theme->pages = Pages::get( array('document_id' => $theme->document->id) );
+	public function theme_route_display_create($theme) {
+		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
+		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
+		$theme->display( 'page.new' );
+	}
+
+	public function theme_route_display_docpage($theme) {
+		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
+		$theme->page = Page::get( array('document_id' => $theme->document->id, 'name' => $theme->matched_rule->named_arg_values['page']) );
+		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		
 		$theme->display( 'page.single' );
 	}
@@ -76,29 +76,50 @@ class PagesPlugin extends Plugin
 		$user = User::identify();
 		
 		$args = array(
-					'title'			=>	$vars['name'],
-					'slug'			=>	Utils::slugify( $vars['name'] ),
-					'content'		=>	$vars['description'] ? $vars['description'] : '',
+					'title'			=>	strip_tags($vars['title']),
+					'slug'			=>	Utils::slugify( strip_tags($vars['title']) ),
+					'content'		=>	$vars['content'] ? $vars['content'] : '',
 					'user_id'		=>	$user->id,
 					'pubdate'		=>	DateTime::date_create( date(DATE_RFC822) ),
 					'status'		=>	Post::status('published'),
-					'content_type'	=>	Post::type('document'),
+					'content_type'	=>	Post::type('docpage'),
 					'client_id'		=>	$vars['client_id'] ? $vars['client_id'] : '',
-					'document_id'	=>	$vars['document_id']
+					'document_id'	=>	$vars['doc'],
+					'name'			=>	Utils::slugify( strip_tags($vars['title']) )
 				);
 		
 		try {
-			$doc = Document::create( $args );
-			$doc->grant( $user, 'full' );
+			$page = Page::create( $args );
+			$page->grant( $user, 'full' );
 			$status = 200;
-			$message = 'Your Document has been created';
+			$message = 'Your page has been created';
 		} catch( Exception $e ) {
 			$status = 401;
-			$message = 'We couldn\'t create your document, please try again.' ;
+			$message = 'We couldn\'t create your page, please try again.' ;
 		}
 				
 		$ar = new AjaxResponse( $status, $message, null );
-		$ar->html( '.content', '#' );
+		$ar->out();
+	}
+	
+	public function action_auth_ajax_update_page($data) {
+		$vars = $data->handler_vars;
+		$page = Page::get( array('id' => $vars['id']) );
+		
+		$page->title = strip_tags( $vars['title'] );
+		$page->name = Utils::slugify( strip_tags($vars['title']) );
+		$page->content = $vars['content'];
+		
+		try {		
+			$page->update();
+			$status = 200;
+			$message = $page->title . ' was updated.';
+		} catch( Exception $e ) {
+			$status = 401;
+			$message = 'There was an error updating' . $page->title;
+		}
+
+		$ar = new AjaxResponse( $status, $message, null );
 		$ar->out();
 	}
 }

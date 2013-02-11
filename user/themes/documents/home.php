@@ -17,7 +17,7 @@
 						</div>
 					<?php } ?>
 					<div class="grid_2 columns add_doc">
-						<p><i class="icon-add"><a href="#new_doc" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
+						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
 					</div>
 				<?php } else { ?>
 					<div class="add_doc">

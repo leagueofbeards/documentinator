@@ -4,7 +4,7 @@
 		<h3 id="logo"><a href="<?php Site::out_url('habari'); ?>" title="Go Home">Doco</a></h3>
 		<ul>
 			<?php foreach( $pages as $page ) { ?>
-				<li><a href="<?php echo $page->permalink; ?>"><?php echo $page->title; ?></a></li>
+				<li><a href="<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->name)); ?>"><?php echo $page->title; ?></a></li>
 			<?php } ?>
 		</ul>
 		<?php if( isset( $assigned ) ) { ?>

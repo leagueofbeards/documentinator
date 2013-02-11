@@ -18,11 +18,13 @@ $(document).ready(function() {
 			
 	$("#save").click(function (e) {
 		var content = $('.editable').html();
+		var title = $('header h1').html();
 		var data = $('#update_doc').serializeArray();
-		var objContent = new Object();
-		objContent.content = content;
-		var url = $('#update_doc').attr('action');
-		$.post( url, objContent, handleResponse  );
+		var obj = new Object();
+		obj.content = content;
+		obj.title = title;
+		var url = $('.inplace').attr('action');
+		$.post( url, obj, handleResponse  );
 		return false;
 	});
 
@@ -43,6 +45,15 @@ $(document).ready(function() {
 		
 		return false;
 	});
+
+	$('#heading').hover(function() {
+		$('#submenu').fadeIn();
+	});
+
+	$('#submenu').mouseleave(function() {
+		$(this).stopTime();
+		$(this).oneTime(3000, function() { $('#submenu').fadeOut(); });
+	})
 });
 
 var handleResponse = function(data, callback) {

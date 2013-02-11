@@ -3,9 +3,6 @@
 <div class="container">
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
-		<div id="new_page">
-			<a class="new_page" href="<?php URL::out('display_create', array('slug' => $document->slug)); ?>"><i class="icon-page">n</i></a>
-		</div>
 		<div id="editor">
 			<div id="save">
 				<a class="save" href="#"><i class="icon-save">s</i></a>
@@ -26,11 +23,12 @@
 			<a id="code" href="#"><i class="icon-code">P</i></a>
 		</div>
 		<div class="article page">
-			<header><h1 contenteditable="true"><?php echo $document->title_out; ?></h1></header>
+			<header><h1 contenteditable="true">My New Great Document</h1></header>
 			<hr class="large">
-			<form id="update_doc" class="inplace" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'update_document', 'id' => $document->id))); ?>">
+			<form id="create_document" class="inplace" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'create_document'))); ?>">
 			<div class="doc-section body editable" id="intro" name="content" contenteditable="true" designmode="on">
-				<?php echo $document->content_out; ?>
+				<p>The powered flight took a total of about eight and a half minutes. It seemed to me it had gone by in a lash. We had gone from sitting still on the launch pad at the Kennedy Space Center to traveling at 17,500 miles an hour in that eight and a half minutes. </p>
+				<p>It is still mind-boggling to me. I recall making some statement on the air-to-ground radio for the benefit of my fellow astronauts, who had also been in the program a long time, that it was well worth the wait.</p>
 			</div>
 			</form>
 		</div>

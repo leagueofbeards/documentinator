@@ -51,15 +51,18 @@ class DocumentsPlugin extends Plugin
 	}
 
 	public function filter_default_rewrite_rules( $rules ) {
-		$this->add_rule('"doc"/slug', 'display_document');
-		
+		$this->add_rule('"d"/"new"', 'display_create_doc');
+		$this->add_rule('"d"/slug', 'display_document');
 		return $rules;
+	}
+
+	public function theme_route_display_create_doc($theme) {
+		$theme->display( 'document.new' );
 	}
 
 	public function theme_route_display_document($theme) {
 		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
-		$theme->pages = Pages::get( array('document_id' => $theme->document->id) );
-		
+		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		$theme->display( 'document.single' );
 	}
 
@@ -68,15 +71,15 @@ class DocumentsPlugin extends Plugin
 		$user = User::identify();
 		
 		$args = array(
-					'title'			=>	$vars['name'],
-					'slug'			=>	Utils::slugify( $vars['name'] ),
-					'content'		=>	$vars['description'] ? $vars['description'] : '',
+					'title'			=>	$vars['title'],
+					'slug'			=>	Utils::slugify( $vars['title'] ),
+					'content'		=>	$vars['content'] ? $vars['content'] : '',
 					'user_id'		=>	$user->id,
 					'pubdate'		=>	DateTime::date_create( date(DATE_RFC822) ),
 					'status'		=>	Post::status('published'),
 					'content_type'	=>	Post::type('document'),
 					'client_id'		=>	$vars['client_id'] ? $vars['client_id'] : '',
-					'type'			=>	$vars['type']
+					'type'			=>	$vars['type'] ? $vars['type'] : ''
 				);
 		
 		try {
@@ -98,6 +101,7 @@ class DocumentsPlugin extends Plugin
 		$vars = $data->handler_vars;
 		$document = Document::get( array('id' => $vars['id']) );
 		
+		$document->title = strip_tags( $vars['title'] );
 		$document->content = $vars['content'];
 		
 		try {		
