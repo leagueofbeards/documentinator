@@ -64,9 +64,11 @@ class PagesPlugin extends Plugin
 	}
 
 	public function theme_route_display_docpage($theme) {
+		$doc = new DocumentsPlugin();
 		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
 		$theme->page = Page::get( array('document_id' => $theme->document->id, 'name' => $theme->matched_rule->named_arg_values['page']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
+		$theme->approvers = $doc->get_approvers( $theme->document->id );
 		
 		$theme->display( 'page.single' );
 	}

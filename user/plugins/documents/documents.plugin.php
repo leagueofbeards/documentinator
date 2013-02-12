@@ -80,7 +80,7 @@ class DocumentsPlugin extends Plugin
 		DB::insert( DB::table('user_documents'), $args );
 	}
 	
-	private function get_approvers($document) {
+	public function get_approvers($document) {
 		$u_ids = array();
 		$ids = DB::get_results( "SELECT user_id FROM {user_documents} WHERE document_id = ?", array($document) );
 		foreach( $ids as $id ) {

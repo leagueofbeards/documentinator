@@ -7,6 +7,7 @@
 				<li><a href="<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->name)); ?>"><?php echo $page->title; ?></a></li>
 			<?php } ?>
 		</ul>
+		<?php if( isset($document) ) { ?>
 		<h5>Approvals <i class="icon-add" id="add_contributor"><a href="#new_approv_form" role="button" data-toggle="modal">a</a></i></h5>
 		<form id="invite_submit" style="display:none;margin-bottom:0px;margin-left:-1px;" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'add_approver', 'id' => $document->id))); ?>">
 			<input type="text" name="invitee" id="invitee" placeholder="email@site.com" style="width:147px;">
@@ -20,10 +21,11 @@
 			<?php foreach( $approvers as $approvee ) { ?>
 			<li>
 				<?php Gravatar::show( $approvee->email ); ?>
-				<strong class="<?php if( $approvee->in_group('quarantine') ) { echo 'grey'; } ?>"><?php echo $approvee->displayname; ?></strong>
+				<span class="<?php if( $approvee->in_group('quarantine') ) { echo 'grey'; } ?>"><?php echo $approvee->displayname; ?></span>
 				<?php if( $approvee->id == $user->id ) { ?><span class="controls"><i class="icon-approve">c</i> <i class="icon-approve">x</i></span><?php } ?>
 			</li>
 			<?php } ?>
 		</ul>
+		<?php } ?>
 	</nav>
 </div>
