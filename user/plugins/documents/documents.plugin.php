@@ -98,6 +98,7 @@ class DocumentsPlugin extends Plugin
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		$theme->approvers = $this->get_approvers( $theme->document->id );
 		$theme->title = $theme->document->title;
+		$theme->post_id = $theme->document->id;
 		
 		$theme->display( 'document.single' );
 	}

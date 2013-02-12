@@ -3,7 +3,7 @@
 <div class="container">
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
-		<?php if( $document->author->id == $user->id ) { ?>
+		<?php if( $document->get_permissions()->edit ) { ?>
 		<div id="new_page">
 			<a class="new_page" href="<?php URL::out('display_create', array('slug' => $document->slug)); ?>"><i class="icon-page">n</i></a>
 		</div>
@@ -30,10 +30,10 @@
 		</div>
 		<?php } ?>
 		<div class="article page">
-			<header><h1 <?php if( $document->author->id == $user->id ) { ?>contenteditable="true"<?php } ?>><?php echo $document->title_out; ?></h1></header>
+			<header><h1 <?php if( $document->get_permissions()->edit ) { ?>contenteditable="true"<?php } ?>><?php echo $document->title_out; ?></h1></header>
 			<hr class="large">
 			<form id="update_doc" class="inplace" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'update_document', 'id' => $document->id))); ?>">
-			<div class="doc-section body editable" id="intro" name="content" <?php if( $document->author->id == $user->id ) { ?>contenteditable="true" designmode="on"<?php } ?>>
+			<div class="doc-section body editable" id="intro" name="content" <?php if( $document->get_permissions()->edit ) { ?>contenteditable="true" designmode="on"<?php } ?>>
 				<?php echo $document->content_out; ?>
 			</div>
 			</form>

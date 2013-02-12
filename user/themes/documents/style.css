@@ -425,6 +425,10 @@ i {
 	.grey {
 		color: #ccc;
 	}
+	
+	mark {
+		background: #f9f69d;
+	}
 
 	/* Mobile */
 	@media only screen and (max-width: 767px) {

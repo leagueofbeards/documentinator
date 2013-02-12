@@ -72,6 +72,7 @@ class PagesPlugin extends Plugin
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		$theme->approvers = $doc->get_approvers( $theme->document->id );
 		$theme->title = $theme->document->title . ' &raquo; ' . $theme->page->title;
+		$theme->post_id = $theme->page->id;
 		
 		$theme->display( 'page.single' );
 	}

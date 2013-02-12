@@ -4,13 +4,15 @@
 		<h3 id="logo"><a href="<?php Site::out_url('habari'); ?>" title="Go Home">Home</a></h3>
 	<?php if( isset($document) ) { ?>
 		<h5><a href="<?php URL::out('display_document', array('slug' => $document->slug)); ?>" title="Go Home"><?php echo $document->title; ?></a></h5>
-		<hr style="margin-bottom:10px;">
 	<?php } ?>
+		<?php if( isset($pages[0]) ) { ?>
+		<hr style="margin-bottom:10px;">		
 		<ul>
 			<?php foreach( $pages as $page ) { ?>
 				<li><a href="<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->name)); ?>"><?php echo $page->title; ?></a></li>
 			<?php } ?>
 		</ul>
+		<?php } ?>
 		<?php if( isset($document) ) { ?>
 		<hr style="margin-bottom:10px;">
 		<h5>Approvals <?php if( $document->author->id == $user->id ) { ?><i class="icon-add" id="add_contributor"><a href="#new_approv_form" role="button" data-toggle="modal">a</a></i><?php } ?></h5>
