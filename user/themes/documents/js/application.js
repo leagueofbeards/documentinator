@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	prettyPrint();
 	$(".page").mouseenter(function() {
 		$('#editor').fadeIn();
 	});
@@ -27,6 +28,14 @@ $(document).ready(function() {
 		var url = $(this).attr('action');	
 		$('#invitee').val('');
 		$.post( url, args, handleResponse );
+		return false;
+	});
+
+	$('form.ajax').submit(function() {
+		var args = $(this).serialize();
+		var url = $(this).attr('action');	
+		$.post( url, args, handleResponse );
+		
 		return false;
 	});
 

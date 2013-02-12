@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="plugin">
+	<name>Email</name>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	
+	<author url="http://sharpfocusproductions.com/">Sharp Focus Productions, LLC</author>
+	
+	<version>0.1</version>
+	<url>http://sharpfocusproductions.com/</url>
+	<description><![CDATA[Send Email to People.]]></description>
+
+	<copyright>2012</copyright>	
+</pluggable>

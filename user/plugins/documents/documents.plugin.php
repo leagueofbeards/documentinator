@@ -68,10 +68,13 @@ class DocumentsPlugin extends Plugin
 	public function filter_default_rewrite_rules( $rules ) {
 		$this->add_rule('"d"/"new"', 'display_create_doc');
 		$this->add_rule('"d"/slug', 'display_document');
+		$this->add_rule('"i"/slug', 'display_invite');
 		return $rules;
 	}
 
 	public function theme_route_display_create_doc($theme) {
+		$theme->title = 'Create a new Document';
+		
 		$theme->display( 'document.new' );
 	}
 
@@ -94,8 +97,18 @@ class DocumentsPlugin extends Plugin
 		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		$theme->approvers = $this->get_approvers( $theme->document->id );
-
+		$theme->title = $theme->document->title;
+		
 		$theme->display( 'document.single' );
+	}
+
+	public function theme_route_display_invite($theme) {
+		$vars = $data->handler_vars;
+		$user = Users::get( array('info' => array('invite_code' => $theme->matched_rule->named_arg_values['slug'])) );
+		
+		$theme->title = 'Almost there!';
+		$theme->person = $user[0];		
+		$theme->display( 'confirm.account' );
 	}
 
 	public function action_auth_ajax_create_document($data) {
@@ -163,17 +176,19 @@ class DocumentsPlugin extends Plugin
 					
 			$user->insert();
 			$group->add( $user );
-
+			$user->remove_from_group('authenticated');
 			$this->connect_doc( $user, $vars['id'] );
 
-			$user->info->creation_date = DateTime::date_create()->int;			
+			$user->info->invite_date = DateTime::date_create()->int;
+			$user->info->invite_code = Utils::nonce();
 			$user->info->commit();
 			
 			$document->grant( $user, 'read');
 			
 			$status = 200;
-			$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';			
-/* 			Mailer::send_message( $user, 'invite' ); */
+			$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
+			$data = array( 'invite_link' => URL::get('display_invite', array('slug' => $user->info->invite_code)) );
+			Email::send_message( 'invite', $user, $data );
 		} catch( Exception $e ) {
 			$status = 401;
 			$message = 'We couldn\'t add ' . $vars['invitee'] . ' to the approvers list.';
@@ -182,7 +197,24 @@ class DocumentsPlugin extends Plugin
 		$ar = new AjaxResponse( $status, $message, null );
 		$ar->html( '#participating', '#' );
 		$ar->out();
+	}
+	
+	public function action_auth_ajax_update_approver($data) {
+		$vars = $data->handler_vars;
+		$user = User::get_by_id( $vars['id'] );
+		$group = UserGroup::get('authenticated');
+		$group->add( $user );
+		$user->remove_from_group('quarantine');
 		
+		$user->email = $vars['email'];
+		$user->username = $vars['email'];
+		$user->password = Utils::crypt( $vars['password'] );
+		$user->update();
+		
+		$user->info->join_date = DateTime::date_create()->int;
+		$user->info->displayname = $vars['name'];
+		$user->info->invite_code = '';
+		$user->info->commit();
 	}
 }
 ?>

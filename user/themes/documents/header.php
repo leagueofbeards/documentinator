@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Doco &raquo; Eventcollab</title>
+<title><?php Options::out('title'); ?> &raquo; <?php echo $theme->title; ?></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="robots" content="index, follow">
 

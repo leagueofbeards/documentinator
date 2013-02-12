@@ -17,12 +17,25 @@ $(function() {
 		return false;
 	});
 
+	$('#paragraph').click(function() {
+		document.execCommand('formatBlock', false, 'p');
+		$('.editable').focus();
+		return false;
+	});
+
 	$('.heading').click(function() {
 		var which = $(this).data('level');
 		document.execCommand('heading', false, which);
 		$(this).stopTime();
 		$(this).oneTime(500, function() { $('#submenu').fadeOut(); });
 		return false;
+	});
+	
+	$('#link').click(function() {
+		var link = prompt('Please specify the link.');
+		if( link ){
+	        document.execCommand('createLink', false, link);
+	    }
 	});
 	
 	$('#code').click(function() {

@@ -52,14 +52,16 @@ class PagesPlugin extends Plugin
 	}
 
 	public function filter_default_rewrite_rules( $rules ) {
-		$this->add_rule('"d"/slug/"new"', 'display_create');
-		$this->add_rule('"d"/slug/page', 'display_docpage');
+		$this->add_rule('"p"/slug/"new"', 'display_create');
+		$this->add_rule('"p"/slug/page', 'display_docpage');
 		return $rules;
 	}
 
 	public function theme_route_display_create($theme) {
 		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
+		$theme->title = 'Create a new page in ' . $theme->document->title;
+		
 		$theme->display( 'page.new' );
 	}
 
@@ -69,6 +71,7 @@ class PagesPlugin extends Plugin
 		$theme->page = Page::get( array('document_id' => $theme->document->id, 'name' => $theme->matched_rule->named_arg_values['page']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
 		$theme->approvers = $doc->get_approvers( $theme->document->id );
+		$theme->title = $theme->document->title . ' &raquo; ' . $theme->page->title;
 		
 		$theme->display( 'page.single' );
 	}
