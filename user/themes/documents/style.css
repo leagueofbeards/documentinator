@@ -321,7 +321,7 @@ i {
 		z-index: 1;
 		background: #fff;
 		position:fixed;
-		margin-left: -29px;
+		margin-left: 758px;
 		margin-top: 130px;
 		width: 30px;
 		height: auto;
@@ -348,7 +348,7 @@ i {
 		#submenu {
 			display:none;
 			position:fixed;
-			margin-left: -30px;
+			margin-left: 30px;
 			margin-top: -33px;
 			background: #eee;
 			padding: 0px;
@@ -378,7 +378,7 @@ i {
 		#save {
 			position:fixed;
 			margin-top: -37px;
-			margin-left: 0px;			
+			margin-left: 0px;
 			background: #aaa;
 		}
 			#save a:hover {
@@ -398,8 +398,8 @@ i {
 
 		#new_page {
 			position:fixed;
-			margin-left: -29px;
-			margin-top: 25px;
+			margin-left: 758px;
+			margin-top: 30px;
 			background: #aaa;
 			border: 1px solid #ddd;
 		}

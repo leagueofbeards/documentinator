@@ -7,30 +7,16 @@
 				<li><a href="<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->name)); ?>"><?php echo $page->title; ?></a></li>
 			<?php } ?>
 		</ul>
-		<?php if( isset( $assigned ) ) { ?>
 		<h5>Approvals <i class="icon-add" id="add_contributor"><a href="#new_approv_form" role="button" data-toggle="modal">a</a></i></h5>
+		<form id="invite_submit" style="display:none;margin-bottom:0px;margin-left:-1px;"><input type="text" name="invitee" id="invitee" placeholder="email@site.com" style="width:147px;"></form>
 		<ul id="participating">
 			<li>
-				<?php Gravatar::show( $post->author->email ); ?>
-				<strong>You</strong>
+				<?php Gravatar::show( $document->author->email ); ?>
+				<strong><?php if( $document->author->id == $user->id ) { echo 'You'; } else { echo $document->author->displayname; } ?></strong>
 				<span class="controls"><i class="icon-approve">c</i> <i class="icon-approve">x</i></span>
 			</li>
-			<li>
-				<?php Gravatar::show( 'jakob@chrisjdavis.org' ); ?>
-				Jakob Davis
-				<span class="controls"><i class="icon-approve approved">c</i></span>
-			</li>
-			<li>
-				<?php Gravatar::show( 'klein@leagueofbeards.com' ); ?>
-				Klein Maetschke
-				<span class="controls"><i class="icon-denial denied">x</i></span>
-			</li>
-			<li>
-				<?php Gravatar::show( 'heather@chrisjdavis.org' ); ?>
-				Heather Davis
-				<span class="controls"><i class="icon-unknown bigger">?</i></span>
-			</li>
+			<?php if( isset( $assigned ) ) { ?>	
+			<?php } ?>
 		</ul>
-		<?php } ?>
 	</nav>
 </div>

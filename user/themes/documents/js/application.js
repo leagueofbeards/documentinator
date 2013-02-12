@@ -15,7 +15,20 @@ $(document).ready(function() {
 		$.post( url, args, handleResponse );
 		return false;
 	});
-			
+
+	$('#add_contributor').on('click', function() {
+		$('#invite_submit').fadeIn();
+		$('#invitee').focus();
+		return false;
+	});
+
+	$('#invite_submit').submit(function() {
+		var args = $(this).serialize();
+		$('#invitee').val('');
+		console.log(args);
+		return false;
+	});
+
 	$("#save").click(function (e) {
 		var content = $('.editable').html();
 		var title = $('header h1').html();
