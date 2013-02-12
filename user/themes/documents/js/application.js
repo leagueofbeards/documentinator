@@ -24,8 +24,9 @@ $(document).ready(function() {
 
 	$('#invite_submit').submit(function() {
 		var args = $(this).serialize();
+		var url = $(this).attr('action');	
 		$('#invitee').val('');
-		console.log(args);
+		$.post( url, args, handleResponse );
 		return false;
 	});
 

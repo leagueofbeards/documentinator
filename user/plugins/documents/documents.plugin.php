@@ -8,6 +8,7 @@ class DocumentsPlugin extends Plugin
 {
 	public function action_init() {
 		DB::register_table( 'documents' );
+		DB::register_table( 'user_documents' );
 	}
 	
 	public function action_plugin_activation( $plugin_file ) {
@@ -32,6 +33,19 @@ class DocumentsPlugin extends Plugin
 		DB::dbdelta($sql);
 	}
 
+	private function create_user_documents_table() {
+		$sql = "CREATE TABLE {\$prefix}user_documents (
+				id int(10) unsigned NOT NULL AUTO_INCREMENT,
+				user_id int(10) unsigned NOT NULL,
+				document_id int(10) unsigned NOT NULL,
+				PRIMARY KEY (`id`),
+				KEY `document_id` (`document_id`),
+				KEY `user_id` (`user_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;";
+
+		DB::dbdelta($sql);
+	}
+
 	public function filter_posts_get_paramarray($paramarray) {
 		$queried_types = Posts::extract_param($paramarray, 'content_type');
 		if($queried_types && in_array('document', $queried_types)) {
@@ -41,6 +55,7 @@ class DocumentsPlugin extends Plugin
 			$default_fields['{documents}.type'] = TYPE_DOCUMENTATION;
 			$paramarray['default_fields'] = $default_fields;
 		}
+		
 		return $paramarray;
 	}
 
@@ -60,9 +75,26 @@ class DocumentsPlugin extends Plugin
 		$theme->display( 'document.new' );
 	}
 
+	private function connect_doc($user, $doc) {
+		$args = array( 'user_id' => $user->id, 'document_id' => $doc );
+		DB::insert( DB::table('user_documents'), $args );
+	}
+	
+	private function get_approvers($document) {
+		$u_ids = array();
+		$ids = DB::get_results( "SELECT user_id FROM {user_documents} WHERE document_id = ?", array($document) );
+		foreach( $ids as $id ) {
+			$u_ids[] = $id->user_id;
+		}
+				
+		return Users::get( array('id' => $u_ids) );
+	}
+
 	public function theme_route_display_document($theme) {
 		$theme->document = Document::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
 		$theme->pages = Pages::get( array('document_id' => $theme->document->id, 'orderby' =>  'id ASC') );
+		$theme->approvers = $this->get_approvers( $theme->document->id );
+
 		$theme->display( 'document.single' );
 	}
 
@@ -115,6 +147,42 @@ class DocumentsPlugin extends Plugin
 
 		$ar = new AjaxResponse( $status, $message, null );
 		$ar->out();
+	}
+	
+	public function action_auth_ajax_add_approver($data) {
+		$vars = $data->handler_vars;
+		$document = Document::get( array('id' => $vars['id']) );
+		
+		try {
+			$group = UserGroup::get('quarantine');
+			$user = new User(array(
+						'username' => $vars['invitee'],
+						'email' => $vars['invitee'],
+						'password' => Utils::crypt($vars['invitee']),
+					));
+					
+			$user->insert();
+			$group->add( $user );
+
+			$this->connect_doc( $user, $vars['id'] );
+
+			$user->info->creation_date = DateTime::date_create()->int;			
+			$user->info->commit();
+			
+			$document->grant( $user, 'read');
+			
+			$status = 200;
+			$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';			
+/* 			Mailer::send_message( $user, 'invite' ); */
+		} catch( Exception $e ) {
+			$status = 401;
+			$message = 'We couldn\'t add ' . $vars['invitee'] . ' to the approvers list.';
+		}
+		
+		$ar = new AjaxResponse( $status, $message, null );
+		$ar->html( '#participating', '#' );
+		$ar->out();
+		
 	}
 }
 ?>
