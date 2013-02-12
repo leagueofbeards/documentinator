@@ -3,9 +3,6 @@
 <div class="container">
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
-		<div id="new_page">
-			<a class="new_page" href="<?php URL::out('display_create', array('slug' => $document->slug)); ?>"><i class="icon-page">n</i></a>
-		</div>
 		<div id="editor">
 			<div id="save">
 				<a class="save" href="#"><i class="icon-save">s</i></a>
