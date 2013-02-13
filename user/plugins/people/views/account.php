@@ -14,7 +14,7 @@
 					<input type="text" name="username" id="username" value="<?php echo $person->username; ?>" placeholder="Your Username"><br>
 					<input type="text" name="email" id="email" placeholder="Your Email" value="<?php echo $person ? $person->email : ''; ?>"><br>
 					<input type="password" placeholder="Passphrase" name="password" id="password"><br>
-					<input type="submit" value="Update It!">
+					<input type="submit" value="Update Your Account!">
 				</form>
 			</div>
 		</div>
