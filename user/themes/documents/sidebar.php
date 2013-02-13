@@ -6,7 +6,7 @@
 	<?php } ?>
 		<?php if( isset($pages[0]) ) { ?>
 		<hr style="margin-bottom:10px;">		
-		<ul>
+		<ul id="pages">
 			<?php foreach( $pages as $page ) { ?>
 				<li><a href="<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->name)); ?>"><?php echo $page->title; ?></a></li>
 			<?php } ?>

@@ -7,7 +7,7 @@
  * @package Habari
  */
 
- //error_reporting(E_STRICT);
+//error_reporting(E_STRICT);
  //define('DEBUG', TRUE);
 
 /**

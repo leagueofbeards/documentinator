@@ -34,7 +34,7 @@
 <header>
 	<h1><a href="<?php Site::out_url('habari'); ?>" title="Go Home"><?php Options::out('title'); ?></a></h1>
 	<menu>
-		<?php Gravatar::show( $user->email ); ?>
+		<a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>" title="Your Account"><?php Gravatar::show( $user->email ); ?></a>
 	</menu>
 </header>
 </div>

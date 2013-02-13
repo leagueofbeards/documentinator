@@ -105,6 +105,7 @@ class PagesPlugin extends Plugin
 		}
 				
 		$ar = new AjaxResponse( $status, $message, null );
+		$ar->html('#pages', '#');
 		$ar->out();
 	}
 	
@@ -114,7 +115,6 @@ class PagesPlugin extends Plugin
 		$page = Page::get( array('id' => $vars['id']) );
 		
 		$page->title = strip_tags( $vars['title'] );
-		$page->name = Utils::slugify( strip_tags($vars['title']) );
 		$page->content = $vars['content'];
 		
 		try {		
@@ -127,6 +127,7 @@ class PagesPlugin extends Plugin
 		}
 
 		$ar = new AjaxResponse( $status, $message, null );
+		$ar->html('#pages', '#');
 		$ar->out();
 	}
 }
