@@ -25,7 +25,7 @@
 			<li>
 				<?php Gravatar::show( $document->author->email ); ?>
 				<strong><?php if( $document->author->id == $user->id ) { echo 'You'; } else { echo $document->author->displayname; } ?></strong>
-				<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i class="icon-approve">c</i> <i class="icon-approve">x</i></span><?php } ?>
+				<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'approve'))); ?>" class="icon-approve wsse">c</i> <i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'reject'))); ?>" class="icon-reject wsse">x</i></span><?php } ?>
 			</li>
 			<?php foreach( $approvers as $approvee ) { ?>
 			<li>

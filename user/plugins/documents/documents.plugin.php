@@ -6,9 +6,14 @@ define('TYPE_GENERIC', 2);
 
 class DocumentsPlugin extends Plugin
 {
+	const APPROVAL_TYPE_APPROVAL = 1;
+	const APPROVAL_STATUS_APPROVED = 1;
+	const APPROVAL_STATUS_REJECTED = 2;
+
 	public function action_init() {
 		DB::register_table( 'documents' );
 		DB::register_table( 'user_documents' );
+		DB::register_table( 'approvals' );
 	}
 	
 	public function action_plugin_activation( $plugin_file ) {
@@ -65,11 +70,74 @@ class DocumentsPlugin extends Plugin
 		return $schema;		
 	}
 
+	public function filter_post_get($out, $name, $document) {
+		if('document' == Post::type_name($document->get_raw_field('content_type'))) {
+			switch($name) {
+				case 'approval_summary' :
+					$out = $this->get_approval_summary(self::APPROVAL_TYPE_APPROVAL, $document);
+				break;
+			}
+		}
+		
+		return $out;
+	}
+
 	public function filter_default_rewrite_rules( $rules ) {
 		$this->add_rule('"d"/"new"', 'display_create_doc');
 		$this->add_rule('"d"/slug', 'display_document');
 		$this->add_rule('"i"/slug', 'display_invite');
 		return $rules;
+	}
+
+	private function get_approval_summary($approval_type, $document) {
+		$approved = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+				'approval_status' => self::APPROVAL_STATUS_APPROVED,
+			)
+		);
+		
+		$rejected = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+				'approval_status' => self::APPROVAL_STATUS_REJECTED,
+			)
+		);
+		
+		$total = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+			)
+		);
+		
+		$out = array();
+		
+		if($approved > 0) {
+			$out[]= $approved . '✓';
+		}
+		
+		if($rejected > 0) {
+			$out[]= $rejected . '✗';
+		}
+		
+		if(count($out) == 0) {
+			$out[]= '0';
+		}
+		
+		$out[] = '/' . $total;
+		$out = implode(' ', $out);
+		
+		if($total == 0) {
+			$out = '--';
+		}
+		
+		return $out;
 	}
 
 	public function theme_route_display_create_doc($theme) {
@@ -216,6 +284,45 @@ class DocumentsPlugin extends Plugin
 		$user->info->displayname = $vars['name'];
 		$user->info->invite_code = '';
 		$user->info->commit();
+	}
+	
+	public function action_auth_ajax_approval($data) {
+		$user = User::identify();
+		$document_id = $data->handler_vars['id'];
+		$action = $data->handler_vars['action'];
+		$doc = Document::get( array('id' => $document_id) );
+		switch($action) {
+			case 'approve':
+				$approval_status = self::APPROVAL_STATUS_APPROVED;
+				$averb = 'approved';
+				break;
+			case 'reject':
+				$approval_status = self::APPROVAL_STATUS_REJECTED;
+				$averb = 'rejected';
+				break;
+			default:
+				$approval_status = self::APPROVAL_STATUS_REJECTED;
+				$averb = 'rejected';
+				break;
+		}
+
+		DB::update(
+			'{approvals}',
+			array(
+				'approval_date' => DateTime::date_create()->sql,
+				'approval_status' => $approval_status,
+			),
+			array(
+				'post_id' => $document_id,
+				'user_id' => $user->id,
+				'approval_type' => self::APPROVAL_TYPE_APPROVAL,
+			)
+		);
+
+		$ar = new AjaxResponse(200, _t('You %s ' . $doc->title, array($averb)));
+		$ar->html('#side-content', '#');
+		$ar->out();
+
 	}
 }
 ?>

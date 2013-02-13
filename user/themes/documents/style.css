@@ -253,15 +253,16 @@ i {
 			.controls i {
 				font-size: 13px;
 				color: #ccc;
+				font-weight:normal;
 			}
 				.controls i:hover {
-					color: #aaa;
+					color: #aaa !important;
 					cursor: pointer;
 				}
 				
 				.controls i.approved {
 					color: #008100;
-					cursor:auto;
+					cursor:default;
 				}
 				
 				.controls i.denied {

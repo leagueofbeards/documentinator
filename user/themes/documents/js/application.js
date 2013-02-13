@@ -1,3 +1,4 @@
+/*
 $(window).load(function() {
 	if( DI.post_id != '' ) {
 		url = DI.url + '/auth_ajax/get_selections';
@@ -11,6 +12,7 @@ $(window).load(function() {
 		});
 	}
 });
+*/
 
 $(document).ready(function() {
 /*
@@ -18,9 +20,7 @@ $(document).ready(function() {
 		var range = document.getSelection().getRangeAt(0);
 		var newNode = document.createElement('mark');
 		range.surroundContents( newNode );
-		
 		$('body').focus();
-
 		var query = {};
 		$.extend(query, DI.WSSE);
 		query.user_id = DI.user_id;
@@ -34,7 +34,12 @@ $(document).ready(function() {
 	});
 */
 	
-	prettyPrint();	
+	prettyPrint();
+	
+	$('.icon-approve').on('click', function() {
+		
+	});
+	
 	$(".page").mouseenter(function() {
 		$('#editor').fadeIn();
 	});
@@ -97,9 +102,9 @@ $(document).ready(function() {
 		});
 	}, 60000);
 
-	$('a.wsse').on('click', function() {
-		var url = $(this).attr('href');
-		$.post( url, null, handleAjaxResponse );
+	$('.wsse').on('click', function() {
+		var url = $(this).data('url');
+		$.post( url, null, handleResponse );
 		
 		return false;
 	});
