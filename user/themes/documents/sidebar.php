@@ -25,7 +25,13 @@
 			<li>
 				<?php Gravatar::show( $document->author->email ); ?>
 				<strong><?php if( $document->author->id == $user->id ) { echo 'You'; } else { echo $document->author->displayname; } ?></strong>
-				<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'approve'))); ?>" class="icon-approve wsse">c</i> <i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'reject'))); ?>" class="icon-reject wsse">x</i></span><?php } ?>
+				<?php if( DocumentsPlugin::approval_status($document, $user) === true ) { ?>
+					<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i class="icon-approve approved">c</i></span><?php } ?>
+				<?php } elseif( DocumentsPlugin::approval_status($document, $user) === false ) { ?>
+					<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i class="icon-reject denied">x</i></span><?php } ?>
+				<?php } else { ?>
+						<?php if( $document->author->id == $user->id ) { ?><span class="controls"><i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'approve'))); ?>" class="icon-approve wsse">c</i> <i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'reject'))); ?>" class="icon-reject wsse">x</i></span><?php } ?>
+				<?php } ?>
 			</li>
 			<?php foreach( $approvers as $approvee ) { ?>
 			<li>

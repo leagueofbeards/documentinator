@@ -140,6 +140,31 @@ class DocumentsPlugin extends Plugin
 		return $out;
 	}
 
+	public static function approval_status($document, $user) {
+		$ret;
+		$status = DB::get_row(
+			'SELECT approval_type, approval_status FROM {approvals} WHERE post_id = :post_id AND user_id = :user_id',
+			array(
+				'post_id' => $document->id,
+				'user_id' => $user->id,
+			)
+		);
+		
+		switch($status->approval_status) {
+			case self::APPROVAL_STATUS_APPROVED:
+				$ret = true;
+			break;
+			case self::APPROVAL_STATUS_REJECTED:
+				$ret = false;
+			break;
+			default:
+				$ret = 0;
+			break;
+		}
+						
+		return $ret;
+	}
+
 	public function theme_route_display_create_doc($theme) {
 		$theme->title = 'Create a new Document';
 		
@@ -320,7 +345,7 @@ class DocumentsPlugin extends Plugin
 		);
 
 		$ar = new AjaxResponse(200, _t('You %s ' . $doc->title, array($averb)));
-		$ar->html('#side-content', '#');
+		$ar->html('#participating', '#');
 		$ar->out();
 
 	}
