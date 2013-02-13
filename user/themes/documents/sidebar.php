@@ -2,7 +2,7 @@
 <div class="three columns sidebar">
 	<nav>
 	<?php if( isset($document) ) { ?>
-		<h4><a href="<?php URL::out('display_document', array('slug' => $document->slug)); ?>" title="Go Home"><?php echo $document->title; ?></a></h4>
+		<h4 id="projects" data-current="<?php echo $document->slug; ?>"><a href="<?php URL::out('display_document', array('slug' => $document->slug)); ?>" title="Go Home"><?php echo $document->title; ?></a></h4>
 	<?php } ?>
 		<?php if( isset($pages[0]) ) { ?>
 		<hr style="margin-bottom:10px;">		

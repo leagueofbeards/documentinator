@@ -472,6 +472,30 @@ i {
 	mark {
 		background: #f9f69d;
 	}
+	
+	#choices {
+		width: 200px;
+		border-top: 1px solid #ddd;
+		border-radius: 0px 0px 5px 5px;
+		margin-top: 5px;
+		position:absolute;
+		z-index: 300;
+		background: #fff;
+		box-shadow: 0px 2px 5px #aaa;
+	}
+	#choices li {
+		padding: 5px 10px;
+		font-size: 15px;
+		font-weight: normal;
+		cursor: pointer;
+		margin:5px 0px;
+	}
+		#choices li a {
+			font-weight:normal;
+		}
+		#choices li:hover {
+			background: #eee;
+		}
 
 	/* Mobile */
 	@media only screen and (max-width: 767px) {

@@ -349,5 +349,20 @@ class DocumentsPlugin extends Plugin
 		$ar->out();
 
 	}
+	
+	public function action_auth_ajax_get_documents($data) {
+		$vars = $data->handler_vars;
+		$documents = Documents::get( array('nolimit' => true, 'orderby' => 'id ASC', 'not:slug' => $vars['current']) );
+		$str = '<ul id="choices">';	
+		
+		foreach( $documents as $document ) {
+			$str .= '<li><a href="' . URL::get('display_document', array('slug' => $document->slug)) . '">' . $document->title . '</a></li>';
+		}
+		
+		$str .= '</ul>';
+		
+		$ar = new AjaxResponse( 200, null, $str );
+		$ar->out();
+	}
 }
 ?>
