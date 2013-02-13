@@ -4,17 +4,21 @@ $(window).load(function() {
 		var query = {};
 		query.post_id = DI.post_id;
 		$.get( url, query, function(d) {
-			console.log( d );
+			var notes = $.parseJSON( d );
+			for( var i in notes ) {
+				annotate( notes[i].range_text );
+			}
 		});
 	}
 });
 
 $(document).ready(function() {
+/*
 	$('.editable').mouseup(function() {
-		var range = window.getSelection().getRangeAt(0);
+		var range = document.getSelection().getRangeAt(0);
 		var newNode = document.createElement('mark');
 		range.surroundContents( newNode );
-
+		
 		$('body').focus();
 
 		var query = {};
@@ -26,12 +30,9 @@ $(document).ready(function() {
 		if( range && (range = new String(range).replace(/^\s+|\s+$/g,'')) ) {
 			url = DI.url + '/auth_ajax/save_selection';
 			$.post( url, query, handleResponse );
-		}	
+		}
 	});
-
-	$('mark').hover(function() {
-		alert('hover!');
-	});
+*/
 	
 	prettyPrint();	
 	$(".page").mouseenter(function() {
@@ -134,9 +135,9 @@ var handleResponse = function(data, callback) {
 		
 		for(var i in data.html) {
 			var value = data.html[i];
-			if(value == '#') { // refresh the contents of this element from the original page
+			if(value == '#') {
 				semaphore++
-				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function(){
+				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function() {
 					semaphore--;
 				}).fadeIn();
 			}
@@ -170,4 +171,10 @@ var stylePreview = function() {
 
 var displayMessage = function(message) {
 	human_msg.display_msg( message );
+}
+
+var annotate = function(range) {
+	range = decodeURI(range);
+	var html = $('.editable').html();
+	$('body').focus();
 }
