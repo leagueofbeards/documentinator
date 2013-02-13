@@ -7,6 +7,7 @@
 			<li><a href="<?php URL::out('display_integrations', array('slug' => $person->username)); ?>">Integrations</a></li>
 			<li><a href="<?php URL::out('display_notifications'); ?>">Notifications</a></li>			
 			<li><a href="<?php URL::out('display_billing'); ?>">Billing Details</a></li>
+			<li><a href="<?php URL::out('display_burninate', array('slug' => $person->username)); ?>">Close Your Account</a></li>
 		</ul>
 	</nav>
 </div>

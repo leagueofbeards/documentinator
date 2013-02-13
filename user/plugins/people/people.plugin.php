@@ -6,11 +6,13 @@ class People extends Plugin
 		$this->add_template( 'account', __DIR__ . '/views/account.php' );
 		$this->add_template( 'account.sidebar', __DIR__ . '/views/account.sidebar.php' );
 		$this->add_template( 'account.integrations', __DIR__ . '/views/account.integrations.php' );
+		$this->add_template( 'account.burninate', __DIR__ . '/views/account.burninate.php' );
 	}
 
 	public function filter_default_rewrite_rules( $rules ) {
 		$this->add_rule('"i"/slug', 'display_invite');
-		$this->add_rule('"account"/slug/"integrations"', 'display_integrations');		
+		$this->add_rule('"account"/slug/"integrations"', 'display_integrations');
+		$this->add_rule('"account"/slug/"burninate"', 'display_burninate');
 		$this->add_rule('"account"/slug', 'display_useraccount');
 		return $rules;
 	}
@@ -24,11 +26,19 @@ class People extends Plugin
 	}
 
 	public function theme_route_display_integrations($theme) {
-		$user = Users::get( array('info' => array('invite_code' => $theme->matched_rule->named_arg_values['slug'])) );
+		$user = User::get($theme->matched_rule->named_arg_values['slug'] );
 
 		$theme->title = 'Your Integrations';
-		$theme->person = $user[0];
+		$theme->person = $user;
 		$theme->display( 'account.integrations' );
+	}
+
+	public function theme_route_display_burninate($theme) {
+		$user = User::get( $theme->matched_rule->named_arg_values['slug'] );
+
+		$theme->title = 'Burninate!';
+		$theme->person = $user;
+		$theme->display( 'account.burninate' );
 	}
 
 	public function theme_route_display_useraccount($theme) {
