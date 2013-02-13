@@ -30,3 +30,11 @@
 <?php echo $theme->header(); ?>
 </head>
 <body>
+<div id="masthead" class="container">
+<header>
+	<h1><a href="<?php Site::out_url('habari'); ?>" title="Go Home"><?php Options::out('title'); ?></a></h1>
+	<menu>
+		<?php Gravatar::show( $user->email ); ?>
+	</menu>
+</header>
+</div>

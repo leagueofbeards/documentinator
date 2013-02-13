@@ -1,9 +1,8 @@
 <?php namespace Habari; ?>
 <div class="three columns sidebar">
 	<nav>
-		<h3 id="logo"><a href="<?php Site::out_url('habari'); ?>" title="Go Home">Home</a></h3>
 	<?php if( isset($document) ) { ?>
-		<h5><a href="<?php URL::out('display_document', array('slug' => $document->slug)); ?>" title="Go Home"><?php echo $document->title; ?></a></h5>
+		<h4><a href="<?php URL::out('display_document', array('slug' => $document->slug)); ?>" title="Go Home"><?php echo $document->title; ?></a></h4>
 	<?php } ?>
 		<?php if( isset($pages[0]) ) { ?>
 		<hr style="margin-bottom:10px;">		

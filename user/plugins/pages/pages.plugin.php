@@ -110,6 +110,7 @@ class PagesPlugin extends Plugin
 	
 	public function action_auth_ajax_update_page($data) {
 		$vars = $data->handler_vars;
+
 		$page = Page::get( array('id' => $vars['id']) );
 		
 		$page->title = strip_tags( $vars['title'] );

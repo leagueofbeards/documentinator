@@ -34,20 +34,31 @@ $(document).ready(function() {
 	});
 */
 	
-	prettyPrint();
+	styleCode();
 	
-	$('.icon-approve').on('click', function() {
-		
+	$(".save").on('click', function() {
+		if( $('.editable').attr('contenteditable') == 'true' ) {
+			unstyleCode();
+			var content = $('.editable').html();
+			var title = $('.article header h1').html();
+			var data = $('#update_doc').serializeArray();
+			var obj = new Object();
+			obj.content = content;
+			obj.title = title;
+			var url = $('.inplace').attr('action');
+			$.post( url, obj, handleResponse  );
+			styleCode();
+			return false;
+		} else {
+			$('#editor').fadeIn();
+			$('.article header h1').attr('contenteditable', true);
+			$('.editable').attr('contenteditable', true);
+			return false;
+		}
 	});
 	
-	$(".page").mouseenter(function() {
-		$('#editor').fadeIn();
-	});
-	
-	$('.editable').keydown(function() {
-		$('#save').addClass('enabled');
-		$(this).stopTime();
-		$(this).oneTime(2000, function() { stylePreview(); });
+	$('.editable, .article header h1').keydown(function() {
+		$('#save .save').addClass('update').html('<i class="icon-save">s</i>');
 	});
 	
 	$('#add_document').click(function() {
@@ -76,18 +87,6 @@ $(document).ready(function() {
 		var url = $(this).attr('action');	
 		$.post( url, args, handleResponse );
 		
-		return false;
-	});
-
-	$("#save").click(function (e) {
-		var content = $('.editable').html();
-		var title = $('header h1').html();
-		var data = $('#update_doc').serializeArray();
-		var obj = new Object();
-		obj.content = content;
-		obj.title = title;
-		var url = $('.inplace').attr('action');
-		$.post( url, obj, handleResponse  );
 		return false;
 	});
 
@@ -158,7 +157,7 @@ var handleResponse = function(data, callback) {
 var styleCode = function() {
 	var a = false;
 
-	$('pre').parent().each(function() {
+	$('pre').each(function() {
 		if (!$(this).hasClass("prettyprint")) {
 			$(this).addClass("prettyprint");
 			a = true
@@ -168,10 +167,17 @@ var styleCode = function() {
 	if (a) { prettyPrint() } 
 }
 
-var stylePreview = function() {
-	$('.editable pre').each(function() {
-		$(this).html( prettyPrintOne($(this).html()) );
+var unstyleCode = function() {
+	var a = false;
+
+	$('pre').each(function() {
+		if ($(this).hasClass("prettyprint")) {
+			$(this).removeClass("prettyprint");
+			a = true
+		}
 	});
+	
+	if (a) { prettyPrint() } 
 }
 
 var displayMessage = function(message) {

@@ -33,8 +33,38 @@ i {
 }
 
 	div.container {
-		padding-top: 60px; 
-	}	
+		padding-top: 0px;
+	}
+		
+		#masthead h1 {
+			background: #fff;
+			text-transform: lowercase;
+			float:left;
+			font-weight: bold;
+			font-size: 24px;
+			padding: 5px 20px 10px;
+			margin-top: 25px;
+			margin-bottom: 40px;
+			border-radius: 5px;
+			line-height: 28px;
+		}
+			#masthead h1 a {
+				text-decoration: none;
+				color: #666;
+			}
+				#masthead h1 a:hover {
+					color: #444;
+				}
+
+		#masthead menu {
+			margin-top: 29px;
+			margin-right: 5px;
+			float: right;
+		}
+			#masthead menu .gravatar {
+				width: 35px;
+				height: 35px;
+			}
 
 	/* Doc nav */
 	nav {
@@ -72,12 +102,12 @@ i {
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-weight: bold;
 	}
-		h5 {
+		h4 {
 			width: 100%;
 			float:left;
 			margin-bottom: 5px;
 		}
-			h5 a {
+			h4 a {
 				text-decoration: none;
 			}
 		i#add_contributor {
@@ -100,13 +130,13 @@ i {
 				background: #aaa;
 			}
 	header h1 {
-		outline: none;
-		font-size: 52px;
-		line-height: 61px;
-		letter-spacing: -1px;
-		font-weight: normal;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		padding: 10px 20px 0px;
+			outline: none;
+			font-size: 52px;
+			line-height: 61px;
+			letter-spacing: -1px;
+			font-weight: normal;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			padding: 10px 20px 0px;
 		}
 		
 	hr.large {
@@ -326,7 +356,7 @@ i {
 		z-index: 1;
 		background: #fff;
 		position:fixed;
-		margin-left: 758px;
+		margin-left: 759px;
 		margin-top: 130px;
 		width: 30px;
 		height: auto;
@@ -353,7 +383,7 @@ i {
 		#submenu {
 			display:none;
 			position:fixed;
-			margin-left: 30px;
+			margin-left: 33px;
 			margin-top: -33px;
 			background: #eee;
 			padding: 0px;
@@ -382,13 +412,25 @@ i {
 
 		#save {
 			position:fixed;
-			margin-top: -37px;
-			margin-left: 0px;
-			background: #aaa;
+			margin-top: 90px;
+			margin-left: 755px;
+			background: #fff;
+			border: 1px solid #ddd;
 		}
-			#save a:hover {
-				background: #aaa;				
+			#save a {
+				text-decoration: none;
+				display:block;
+				padding: 7px 6px 3px 12px;
+				text-align: center;
+				background:#fff;
 			}
+				#save a.update {
+					padding: 7px 4px 3px 12px;
+				}
+			#save a:hover {
+				background: #eee;				
+			}
+
 			#save.enabled {
 				background: #008200;
 			}

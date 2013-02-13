@@ -16,10 +16,12 @@
 					<li><a href="#" class="heading" data-level="H4">h4</a></li>
 					<li><a href="#" class="heading" data-level="H5">h5</a></li>
 				</ul>
-			</div>			
+			</div>
+			<a id="paragraph" href="#"><strong>p</strong></a>
 			<a id="bold" href="#"><strong>b</strong></a>
 			<a id="italic" href="#"><i>i</i></a>
 			<a id="underline" href="#"><u>u</u></a>
+			<a id="link" href="#"><i class="icon-link">l</i></a>
 			<a id="code" href="#"><i class="icon-code">P</i></a>
 		</div>
 		<div class="article page">

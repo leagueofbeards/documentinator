@@ -25,7 +25,7 @@ $(function() {
 
 	$('.heading').click(function() {
 		var which = $(this).data('level');
-		document.execCommand('heading', false, which);
+		document.execCommand('formatBlock', false, which);
 		$(this).stopTime();
 		$(this).oneTime(500, function() { $('#submenu').fadeOut(); });
 		return false;
@@ -39,7 +39,7 @@ $(function() {
 	});
 	
 	$('#code').click(function() {
-		document.execCommand('insertHTML', false, '<pre class="prettyprint"><br></pre>');
+		document.execCommand('insertHTML', false, '<pre><br></pre>');
 		$('<p><br></p>').appendTo( $('.editable') );
 		$('.editable').focus();
 		return false;
