@@ -80,6 +80,7 @@ class PagesPlugin extends Plugin
 	public function action_auth_ajax_create_page($data) {
 		$vars = $data->handler_vars;
 		$user = User::identify();
+		$doc = Document::get( array('id' => $vars['doc']) );
 		
 		$args = array(
 					'title'			=>	strip_tags($vars['title']),
@@ -105,7 +106,7 @@ class PagesPlugin extends Plugin
 		}
 				
 		$ar = new AjaxResponse( $status, $message, null );
-		$ar->html('#pages', '#');
+		$ar->callback = 'window.location = "' . URL::get('display_docpage', array('slug' => $doc->slug, 'page' => $page->name)) . '"';
 		$ar->out();
 	}
 	

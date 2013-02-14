@@ -22,7 +22,6 @@ $(document).ready(function() {
 	
 	$(".save").on('click', function() {
 		if( $('.editable').attr('contenteditable') == 'true' ) {
-			unstyleCode();
 			var content = $('.editable').html();
 			var title = $('.article header h1').html();
 			var data = $('#update_doc').serializeArray();
@@ -114,6 +113,10 @@ var handleResponse = function(data, callback) {
 			displayMessage( data.message )
 		}
 		
+		if(data.habari_callback != undefined) {
+			eval(data.habari_callback);
+		}
+		
 		var semaphore = 0;
 		var all = false;
 		
@@ -129,10 +132,6 @@ var handleResponse = function(data, callback) {
 			else {
 				$(i).html(value);
 			}
-		}
-
-		if(data.habari_callback != undefined) {
-			eval(data.habari_callback);
 		}
 	}
 	
@@ -164,6 +163,9 @@ var handlePermissionsRepsonse = function(data, callback) {
 				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function() {
 					setupPermissions(data.data);
 					semaphore--;
+					if(all && semaphore == 0 && typeof callback == "function") {
+						callback();
+					}
 				}).fadeIn();
 			}
 			else {

@@ -101,6 +101,10 @@ class People extends Plugin
 		$user->info->displayname = $vars['name'];
 		$user->info->invite_code = '';
 		$user->info->commit();
+
+		$ar = new AjaxResponse( 200, $message, $user->id );
+		$ar->callback = 'window.location = "' . Site::get_url('habari') . '"';
+		$ar->out();
 	}
 	
 	public function action_auth_ajax_update_account($data) {
@@ -127,7 +131,6 @@ class People extends Plugin
 		$ar = new AjaxResponse( $status, $message, null );
 		$ar->html( '#user_update', '#' );
 		$ar->out();
-		
 	}
 }
 ?>
