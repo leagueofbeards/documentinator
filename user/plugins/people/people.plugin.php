@@ -53,28 +53,39 @@ class People extends Plugin
 		$document = Document::get( array('id' => $vars['id']) );
 		
 		try {
-			$group = UserGroup::get('quarantine');
-			$user = new User(array(
-						'username' => $vars['invitee'],
-						'email' => $vars['invitee'],
-						'password' => Utils::crypt($vars['invitee']),
-					));
-					
-			$user->insert();
-			$group->add( $user );
-			$user->remove_from_group('authenticated');
-			DocumentsPlugin::connect_doc( $user, $vars['id'] );
-
-			$user->info->invite_date = DateTime::date_create()->int;
-			$user->info->invite_code = Utils::nonce();
-			$user->info->commit();
-			
-			$document->grant( $user, 'read');
-			
-			$status = 200;
-			$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
-			$data = array( 'invite_link' => URL::get('display_invite', array('slug' => $user->info->invite_code)) );
-			Email::send_message( 'invite', $user, $data );
+		
+			$check = User::get( $vars['invitee'] );
+			if( $check->id != '' ) {
+				$document->grant( $check, 'read');
+				DocumentsPlugin::connect_doc( $check, $vars['id'] );				
+				$status = 200;
+				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
+				$data = array( 'invite_link' => URL::get('display_document', array('slug' => $document->slug)) );
+				Email::send_message( 'invite', $check, $data );
+			} else {		
+				$group = UserGroup::get('quarantine');
+				$user = new User(array(
+							'username' => $vars['invitee'],
+							'email' => $vars['invitee'],
+							'password' => Utils::crypt($vars['invitee']),
+						));
+						
+				$user->insert();
+				$group->add( $user );
+				$user->remove_from_group('authenticated');
+				DocumentsPlugin::connect_doc( $user, $vars['id'] );
+	
+				$user->info->invite_date = DateTime::date_create()->int;
+				$user->info->invite_code = Utils::nonce();
+				$user->info->commit();
+				
+				$document->grant( $user, 'read');
+				
+				$status = 200;
+				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
+				$data = array( 'invite_link' => URL::get('display_invite', array('slug' => $user->info->invite_code)) );
+				Email::send_message( 'invite', $user, $data );
+			}
 		} catch( Exception $e ) {
 			$status = 401;
 			$message = 'We couldn\'t add ' . $vars['invitee'] . ' to the approvers list.';
