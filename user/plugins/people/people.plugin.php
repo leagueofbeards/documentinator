@@ -19,7 +19,7 @@ class People extends Plugin
 
 	public function theme_route_display_invite($theme) {
 		$user = Users::get( array('info' => array('invite_code' => $theme->matched_rule->named_arg_values['slug'])) );
-		
+		$user[0]->remember();
 		$theme->title = 'Almost there!';
 		$theme->person = $user[0];
 		$theme->display( 'confirm.account' );
@@ -80,7 +80,7 @@ class People extends Plugin
 			$message = 'We couldn\'t add ' . $vars['invitee'] . ' to the approvers list.';
 		}
 		
-		$ar = new AjaxResponse( $status, $message, null );
+		$ar = new AjaxResponse( $status, $message, $user->id );
 		$ar->html( '#participating', '#' );
 		$ar->out();
 	}

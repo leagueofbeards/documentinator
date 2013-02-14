@@ -336,5 +336,28 @@ class DocumentsPlugin extends Plugin
 		$ar = new AjaxResponse( 200, null, $str );
 		$ar->out();
 	}
+	
+	public function action_auth_ajax_set_permissions($data) {
+		$vars = $data->handler_vars;
+		$document = Document::get( array('id' => $vars['document']) );
+		$person = User::get( $vars['id'] );
+				
+		switch( $vars['perm'] ) {
+			case '1' :
+				$document->revoke( $person );
+				$document->grant( $person, 'read' );
+				$message = $person->displayname . ' has been granted review rights.';
+			break;
+			case '2' :
+				$document->revoke( $person );
+				$document->grant( $person, 'edit' );
+				$message = $person->displayname . ' has been granted edit rights.';
+			break;			
+		}
+		
+		$ar = new AjaxResponse( 200, $message, null );
+		$ar->html('#participating', '#');
+		$ar->out();
+	}
 }
 ?>

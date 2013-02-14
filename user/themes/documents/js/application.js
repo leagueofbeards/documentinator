@@ -1,6 +1,9 @@
 var shown = false;
 $(document).ready(function() {	
 	styleCode();
+
+	setupPermissions();
+	
 	$('#projects').mouseenter(function() {
 		if( shown == false ) {
 			$.get( DI.url + '/auth_ajax/get_documents?current=' + $(this).data('current'), function(d) {
@@ -111,10 +114,6 @@ var handleResponse = function(data, callback) {
 			displayMessage( data.message )
 		}
 		
-		if(data.habari_callback != undefined) {
-			eval(data.habari_callback);
-		}
-
 		var semaphore = 0;
 		var all = false;
 		
@@ -123,6 +122,47 @@ var handleResponse = function(data, callback) {
 			if(value == '#') {
 				semaphore++
 				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function() {
+					setupPermissions(data.data);
+					semaphore--;
+				}).fadeIn();
+			}
+			else {
+				$(i).html(value);
+			}
+		}
+
+		if(data.habari_callback != undefined) {
+			eval(data.habari_callback);
+		}
+	}
+	
+	all = true;
+}
+
+var handlePermissionsRepsonse = function(data, callback) {
+	if(data.response_code == undefined) {
+	} else {
+		if(data.response_code != 200) {
+			// @todo Do something different on error?
+		}
+				
+		if(data.message != undefined && data.message != '') {
+			displayMessage( data.message )
+		}
+		
+		if(data.habari_callback != undefined) {
+			eval(data.habari_callback);
+		}
+		
+		var semaphore = 0;
+		var all = false;
+		
+		for(var i in data.html) {
+			var value = data.html[i];
+			if(value == '#') {
+				semaphore++
+				$(i).hide().load(location.href + ' #' + $(i).attr('id') + ' > *', function() {
+					setupPermissions(data.data);
 					semaphore--;
 				}).fadeIn();
 			}
@@ -148,21 +188,30 @@ var styleCode = function() {
 	if (a) { prettyPrint() } 
 }
 
-var unstyleCode = function() {
-	var a = false;
-
-	$('pre').each(function() {
-		if ($(this).hasClass("prettyprint")) {
-			$(this).removeClass("prettyprint");
-			a = true
-		}
-	});
-	
-	if (a) { prettyPrint() } 
-}
-
 var displayMessage = function(message) {
 	human_msg.display_msg( message );
+}
+
+var setupPermissions = function(user) {
+	$('#participating li.other').each(function() {
+		var url = $(this).data('url');
+		$(this).popover({
+			animation: true,
+			title: 'Set Permissions',
+			html: true,
+			content: '<p>This user is currently set as a reviewer. Update this below.</p><form><select name="permissions" id="permissions" onchange="savePermissions(this.value);"><option>Choose Permissions</option><option value="' + url + '&perm=1">Reviewer</option><option value="' + url + '&perm=2">Editor</option></select></form>',
+			placement: 'right',
+			trigger: 'click',
+		});
+		
+		if( user != null && $(this).attr('id') == 'user-' + user ) {
+			$(this).trigger('click');
+		}
+	});
+}
+
+var savePermissions = function(url) {
+	$.get( url, handlePermissionsRepsonse );
 }
 
 /*

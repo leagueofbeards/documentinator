@@ -15,7 +15,7 @@ class Doco extends Theme
 		
 	public function action_add_template_vars() {
 		if( !User::identify()->loggedin ) {
-			$anonymous_routes = array();
+			$anonymous_routes = array('display_invite');
 			$anonymous_routes = Plugins::filter('anonymous_routes', $anonymous_routes, $this->matched_rule);
 			$matched_rule = $this->matched_rule;
 			if($matched_rule instanceof RewriteRule && !in_array($matched_rule->name, $anonymous_routes)) {

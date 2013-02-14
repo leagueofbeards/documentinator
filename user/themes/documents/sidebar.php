@@ -35,7 +35,7 @@
 					<?php } ?>
 				</li>
 				<?php foreach( $approvers as $approvee ) { ?>
-				<li>
+				<li id="user-<?php echo $approvee->id ?>" class="other" data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'set_permissions', 'document' => $document->id, 'id' => $approvee->id))); ?>">
 					<?php Gravatar::show( $approvee->email ); ?>
 					<span class="<?php if( $approvee->in_group('quarantine') ) { echo 'grey'; } ?>"><?php if( $approvee->id == $user->id ) { echo 'You'; } else { ?><?php echo $approvee->displayname; ?><?php } ?></span>
 						<?php if( DocumentsPlugin::approval_status($document, $approvee) === true ) { ?>
