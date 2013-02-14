@@ -14,6 +14,7 @@
               
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/bootstrap.min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/rangy-core.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/html5.wyswyg.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/humanmsg.js"></script>
 
@@ -34,7 +35,10 @@
 <header>
 	<h1><a href="<?php Site::out_url('habari'); ?>" title="Go Home"><?php Options::out('title'); ?></a></h1>
 	<menu>
-		<a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>" title="Your Account"><?php Gravatar::show( $user->email ); ?></a>
+		<ul>
+		<li id="auth"><a href="<?php Site::out_url('habari'); ?>/auth/logout">Logout</a></li>
+		<li><a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>" title="Your Account"><?php Gravatar::show( $user->email ); ?></a></li>
+		</ul>
 	</menu>
 </header>
 </div>

@@ -39,11 +39,55 @@ $(function() {
 	});
 	
 	$('#code').click(function() {
-		document.execCommand('insertHTML', false, '<pre><br></pre>');
-		$('<p><br></p>').appendTo( $('.editable') );
+		document.execCommand('insertHTML', false, '<code contenteditable="false"><pre>code snippet here</pre></code>');
 		$('.editable').focus();
 		return false;
 	});
+	
+	var getFirstRange = function() {
+	    var sel = rangy.getSelection();
+	    return sel.rangeCount ? sel.getRangeAt(0) : null;
+	}
+
+	$('.editable').delegate('pre', 'keydown', function(event) { 
+        switch(event.keyCode) {
+            case 13:
+                var range = getFirstRange(), 
+                    added = false,
+                    newline = document.createTextNode('\r\n');
+
+                if (range) {
+                    range.insertNode(newline);              
+                    range.setEndAfter(newline);
+                    range.setStartAfter(newline);
+                    var sel = rangy.getSelection();
+                    sel.setSingleRange(range)
+                    added = true;
+                } 
+
+                if (added) {
+                    event.preventDefault();
+                }
+                break;
+            case 9:
+                // insert a tab
+                var range = getFirstRange(),
+                    tab = document.createTextNode('\t');
+                if (range) {
+                    range.insertNode(tab);
+                    var sel = rangy.getSelection();
+                    range.setEndAfter(tab);
+                    range.setStartAfter(tab);
+                    sel.setSingleRange(range)
+                } 
+                return false;   
+        }
+    }).delegate('pre', 'click', function() { 
+        $(this).attr('contenteditable', true);
+    }).delegate('pre', 'blur', function() {
+        $(this).removeAttr('contenteditable');
+    });
+	
 });
 
 jQuery.fn.extend({

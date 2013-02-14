@@ -76,6 +76,9 @@ class DocumentsPlugin extends Plugin
 				case 'approval_summary' :
 					$out = $this->get_approval_summary(self::APPROVAL_TYPE_APPROVAL, $document);
 				break;
+				case 'is_approved' :
+					$out = $this->get_approvals(self::APPROVAL_TYPE_APPROVAL, $document);
+				break;
 			}
 		}
 		
@@ -86,6 +89,44 @@ class DocumentsPlugin extends Plugin
 		$this->add_rule('"d"/"new"', 'display_create_doc');
 		$this->add_rule('"d"/slug', 'display_document');
 		return $rules;
+	}
+
+	private function get_approvals($approval_type, $document) {
+		$approved = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+				'approval_status' => self::APPROVAL_STATUS_APPROVED,
+			)
+		);
+		
+		$rejected = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+				'approval_status' => self::APPROVAL_STATUS_REJECTED,
+			)
+		);
+		
+		$total = DB::get_value(
+			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type',
+			array(
+				'post_id' => $document->id,
+				'approval_type' => $approval_type,
+			)
+		);
+		
+		$out = '';
+		
+		if( $approved == $total && $total != 0 ) {
+			$out = '<span class="status_icon approved"><i class="icon-approved">c</i></span>';
+		} else {
+			$out = false;
+		}
+		
+		return $out;
 	}
 
 	private function get_approval_summary($approval_type, $document) {
@@ -117,25 +158,21 @@ class DocumentsPlugin extends Plugin
 		
 		$out = array();
 		
-		if($approved > 0) {
-			$out[]= $approved . '✓';
-		}
-		
-		if($rejected > 0) {
-			$out[]= $rejected . '✗';
-		}
+		$out[]= '<span class="approvals"><i class="icon-approved">c</i>' . $approved . '</span>';
+		$out[]= '<span class="denials"><i class="icon-denied">x</i>' . $rejected . '</span>';
 		
 		if(count($out) == 0) {
 			$out[]= '0';
 		}
 		
-		$out[] = '/' . $total;
-		$out = implode(' ', $out);
+		$out = implode('', $out);
 		
 		if($total == 0) {
-			$out = '--';
+			$out = '&nbsp;';
+		} elseif( $total == $approved ) {
+			$out = '&nbsp;';
 		}
-		
+				
 		return $out;
 	}
 
