@@ -41,7 +41,11 @@
 						<?php if( DocumentsPlugin::approval_status($document, $approvee) === true ) { ?>
 						<span class="controls"><i class="icon-approve approved">c</i></span>
 					<?php } elseif( DocumentsPlugin::approval_status($document, $approvee) === false ) { ?>
-						<span class="controls"><i class="icon-reject denied">x</i></span>
+						<?php if( $approvee->id == $user->id ) { ?>
+						<span class="controls"><i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'approve'))); ?>" class="icon-approve wsse">c</i> <i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'reject'))); ?>" class="icon-reject denied wsse">x</i></span>
+						<?php } else { ?>
+							<span class="controls"><i class="icon-reject denied">x</i></span>
+						<?php } ?>
 					<?php } else { ?>
 						<?php if( $approvee->id == $user->id ) { ?><span class="controls"><i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'approve'))); ?>" class="icon-approve wsse">c</i> <i data-url="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'approval', 'id' => $document->id, 'action' => 'reject'))); ?>" class="icon-reject wsse">x</i></span><?php } ?>
 					<?php } ?>
