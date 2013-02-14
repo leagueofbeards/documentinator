@@ -32,7 +32,7 @@ class Doco extends Theme
 	}
 
 	public function act_display_home( $user_filters = array() ) {
-		$this->docs = Documents::get( array('user_id' => $this->user) );
+		$this->docs = Documents::get( array('user_id' => $this->user, 'orderby' => 'id ASC') );
 		$this->title = 'Your Documents';
 		$this->display('home');
 	}

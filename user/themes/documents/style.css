@@ -363,6 +363,9 @@ i {
 		height: auto;
 		border: 1px solid #ddd;
 	}
+		#editor.create {
+			display:block !important;
+		}
 		#editor a {
 			text-decoration: none;
 			display:block;

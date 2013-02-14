@@ -222,7 +222,7 @@ class DocumentsPlugin extends Plugin
 		}
 				
 		$ar = new AjaxResponse( $status, $message, null );
-		$ar->html( '.content', '#' );
+		$ar->callback = 'window.location = "' . URL::get( 'display_document', array('slug' => $doc->slug) ) . '"';
 		$ar->out();
 	}
 	

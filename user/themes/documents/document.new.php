@@ -3,10 +3,10 @@
 <div class="container">
 	<?php $theme->display('sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
-		<div id="editor">
-			<div id="save">
-				<a class="save" href="#"><i class="icon-save">s</i></a>
-			</div>
+		<div id="save">
+			<a class="save" href="#"><i class="icon-save">s</i></a>
+		</div>
+		<div id="editor" class="create">
 			<a id="heading" href="#"><strong>H</strong></a>
 			<div id="submenu">
 				<ul>

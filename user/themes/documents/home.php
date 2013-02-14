@@ -7,6 +7,7 @@
 			<header><h1>Your Documents</h1></header>
 			<hr class="large">
 			<div id="docs" class="thirteen columns content">
+				<div class="nine columns">
 				<?php if( isset($docs) ) { ?>
 					<?php foreach( $docs as $doc ) { ?>
 						<div id="doc-<?php echo $doc->id; ?>" class="doc_container grid_2 columns">
@@ -16,12 +17,15 @@
 							<p><?php echo $doc->title; ?></p>
 						</div>
 					<?php } ?>
+				</div>
+				<div class="three columns" style="float:right;">
 					<div class="grid_2 columns add_doc">
 						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
 					</div>
+				</div>
 				<?php } else { ?>
-					<div class="add_doc">
-						<p>Add a Document</p>
+					<div class="grid_2 columns add_doc">
+						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
 					</div>
 				<?php } ?>
 			</div>
