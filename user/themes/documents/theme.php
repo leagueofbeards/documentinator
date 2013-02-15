@@ -4,13 +4,11 @@
 class Doco extends Theme
 {
 	public function action_init_theme() {
-		$user = User::identify();
 		Format::apply( 'autop', 'comment_content_out' );
 		Format::apply( 'tag_and_list', 'post_tags_out' );
 		Format::apply_with_hook_params( 'more', 'post_content_out', 'more' );
 		Format::apply( 'autop', 'post_content_excerpt' );
 		Format::apply_with_hook_params( 'more', 'post_content_excerpt', 'more',60, 1 );
-		$this->assign( 'user', $user );
 	}
 		
 	public function action_add_template_vars() {
@@ -24,15 +22,14 @@ class Doco extends Theme
 				exit;
 			}
 		} else {
-			$user = User::identify();
 		}
 		
 		$this->wsse = Utils::WSSE();
-		$this->user = User::identify();
 	}
 
 	public function act_display_home( $user_filters = array() ) {
-		$this->docs = Documents::get( array('user_id' => $this->user, 'orderby' => 'id ASC', 'nolimit' => true) );
+		$user = User::identify();
+		$this->docs = Documents::get( array('orderby' => 'id ASC', 'nolimit' => true) );
 		$this->title = 'Your Documents';
 		$this->display('home');
 	}

@@ -22,8 +22,7 @@ class Permissions extends Plugin
 				post_id INT UNSIGNED NOT NULL,
 				access_mask TINYINT UNSIGNED NOT NULL,
 				PRIMARY KEY (grantee_id, grantee_type, post_id)
-				) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
-		";
+				) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;";
 		
 		DB::dbdelta($sql);
 	}
@@ -57,7 +56,6 @@ class Permissions extends Plugin
 			array(
 				'document'	=>	1,
 				'page'		=>	1,
-				'note'		=>	1,
 			)
 		);
 		

@@ -8,7 +8,7 @@
  */
 
 //error_reporting(E_STRICT);
- //define('DEBUG', TRUE);
+//define('DEBUG', TRUE);
 
 /**
  * Define the constant HABARI_PATH.
