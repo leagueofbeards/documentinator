@@ -350,7 +350,7 @@ class DocumentsPlugin extends Plugin
 			break;
 			case '2' :
 				$document->revoke( $person );
-				$document->grant( $person, 'edit' );
+				$document->grant( $person, array('read','edit') );
 				$message = $person->displayname . ' has been granted edit rights.';
 			break;			
 		}

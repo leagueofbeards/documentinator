@@ -1,35 +1,32 @@
 <?php
-
 namespace Habari;
-
 define('GRANTEE_USER', 1);
 define('GRANTEE_GROUP', 2);
 
-class Permissions extends Plugin
+class MwPermsPlugin extends Plugin
 {
 	public function action_init() {
 		DB::register_table('user_permissions');
-		if(User::identify()->can('superuser')) {
-			$this->add_rule('"admin"/"permissions"/post_id', 'admin_permissions');
-			$this->add_template( 'permissions_admin', __DIR__ . '/permissions.admin.php' );
-		}
 	}
 
 	public function action_plugin_activation( $file ) {
-		$sql = "CREATE TABLE {\$prefix}user_permissions (
-				grantee_id INT UNSIGNED NOT NULL,
-				grantee_type TINYINT UNSIGNED NOT NULL,
-				post_id INT UNSIGNED NOT NULL,
-				access_mask TINYINT UNSIGNED NOT NULL,
-				PRIMARY KEY (grantee_id, grantee_type, post_id)
-				) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;";
-		
+		// Let's make a permission table
+		$sql = <<< ADD_PERMISSIONS_TABLE
+CREATE TABLE {\$prefix}user_permissions (
+  grantee_id INT UNSIGNED NOT NULL,
+  grantee_type TINYINT UNSIGNED NOT NULL,
+  post_id INT UNSIGNED NOT NULL,
+  access_mask TINYINT UNSIGNED NOT NULL,
+  PRIMARY KEY (grantee_id, grantee_type, post_id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+
+ADD_PERMISSIONS_TABLE;
+
 		DB::dbdelta($sql);
 	}
 
 	public function perm_bitmask($what) {
 		$bitmask = new Bitmask(array('read', 'edit', 'delete'));
-
 		if(is_integer($what)) {
 			$bitmask->value = $what;
 		} else {
@@ -41,24 +38,21 @@ class Permissions extends Plugin
 		
 		return $bitmask;
 	}
-	
-	/**
-	 * function perms_apply_to
-	 * Identify the objects in the system to apply our permisions to
-	 * @param array Associative array of active post types
-	 * @return array An array of post types to apply permissions to
-	 *
-	 **/
+
+	public function filter_perm_bitmask($what) {
+		return $this->perm_bitmask($what);
+	}
+
 	public function perms_apply_to() {
 		$types = Post::list_active_post_types();
 		$types = array_intersect_key(
 			$types,
 			array(
-				'document'	=>	1,
-				'page'		=>	1,
+				'document' => 1,
 			)
 		);
 		
+		$types = Plugins::filter('get_document_types', $types);
 		return $types;
 	}
 
@@ -72,12 +66,18 @@ class Permissions extends Plugin
 		if(isset($paramarray['ignore_permissions']) && $paramarray['ignore_permissions'] == true) {
 			// Don't use the core permissions if permissions are ignored
 			$query->where()->add($master_perm_where, array(), 'master_perm_where');
-		} else {
+		}
+		else {
+			// Only join permissions if the user is not a superuser, who can see everything
 			if(!$user->can('super_user')) {
-				// Only join permissions if the user is not a superuser, who can see everything
-				$query->join('LEFT JOIN {user_permissions} up ON {posts}.id=up.post_id', array(), 'user_permissions__allowed');
-	
+
+				// Join the posts table to the permissions
+				$query->join('INNER JOIN {user_permissions} up ON {posts}.id=up.post_id', array(), 'user_permissions__allowed');
+
+				$query->select('up.access_mask');
+
 				// Any of the conditions on $perm_where permit the user access to a post
+				// @todo restrict access to line items based on the user's permission to the related invoice_id!
 				$perm_where = new QueryWhere('OR');
 				$perm_where->in('{posts}.content_type', $this->perms_apply_to(), 'resticted_types', 'intval', false);
 
@@ -87,7 +87,7 @@ class Permissions extends Plugin
 				$outer_where->add('up.access_mask & ' . $read_bit . ' = ' . $read_bit);
 
 				$inner_where = new QueryWhere('OR');
-				
+
 				// Does the user have access directly (shared)
 				$shared = new QueryWhere();
 				$shared->add('up.grantee_id = :grantee_user_id', array('grantee_user_id' => $user->id));
@@ -95,13 +95,15 @@ class Permissions extends Plugin
 				$inner_where->add($shared);
 
 				// Does the user's company have access?
-				$client = new QueryWhere();
-				$client->add('up.grantee_id = :grantee_client_id', array('grantee_client_id' => $user->info->works_for));
-				$client->add('up.grantee_type = :grantee_type_group', array('grantee_type_group' => GRANTEE_GROUP));
-				$inner_where->add($client);
+				$company = new QueryWhere();
+				$company->add('up.grantee_id = :grantee_company_id', array('grantee_company_id' => $user->info->company));
+				$company->add('up.grantee_type = :grantee_type_group', array('grantee_type_group' => GRANTEE_GROUP));
+				$inner_where->add($company);
+
 				$outer_where->add($inner_where);
+
 				$perm_where->add($outer_where);
-				
+
 				// Add the where clauses to the master condition
 				$master_perm_where->add($perm_where);
 			}
@@ -112,17 +114,12 @@ class Permissions extends Plugin
 	}
 
 	function filter_post_call_create_default_permissions($unused, $post) {
-		if( in_array($post->content_type, $this->perms_apply_to()) ) {
-			// Grant access to the company of the user that created it
-			// Get the user that created it
+		if(in_array($post->content_type, $this->perms_apply_to())) {
 			$user = User::get($post->author_id);
-			if( isset($user->info->works_for) ) { // If the user belongs to a company
-				// Get the company that the user belongs to			
-				$client = Posts::get(array('fetch_fn' => 'get_row', 'content_type' => 'client', 'id' => $user->info->works_for, 'ignore_permissions' => true));
-				// Give the whole company full access
-				$post->grant($client, 'full');
+			if(isset($user->info->company)) {
+				$company = Posts::get(array('fetch_fn' => 'get_row', 'content_type' => 'company', 'id' => $user->info->company, 'ignore_permissions' => true));
+				$post->grant($company, 'full');
 			} else {
-				// Grant access to just this user (this is usually going to be the creation of a company post)
 				$post->grant($user, 'full');
 			}
 		}
@@ -142,18 +139,21 @@ class Permissions extends Plugin
 				'{user_permissions}',
 				array(
 					'access_mask' => $what->value,
-				), array(
+				),
+				array(
 					'grantee_id' => $whom->id,
 					'grantee_type' => GRANTEE_GROUP,
 					'post_id' => $post->id,
 				)
 			);
-		} elseif($whom instanceof User) {
+		}
+		elseif($whom instanceof User) {
 			DB::update(
 				'{user_permissions}',
 				array(
 					'access_mask' => $what->value,
-				), array(
+				),
+				array(
 					'grantee_id' => $whom->id,
 					'grantee_type' => GRANTEE_USER,
 					'post_id' => $post->id,
@@ -161,6 +161,7 @@ class Permissions extends Plugin
 			);
 		}
 	}
+
 
 	/**
 	 * Implement $post->revoke($whom) to revoke permissions on an object
@@ -175,7 +176,8 @@ class Permissions extends Plugin
 				'grantee_type' => GRANTEE_GROUP,
 				'post_id' => $post->id,
 			));
-		} elseif($whom instanceof User) {
+		}
+		elseif($whom instanceof User) {
 			DB::delete('{user_permissions}', array(
 				'grantee_id' => $whom->id,
 				'grantee_type' => GRANTEE_USER,
@@ -184,6 +186,7 @@ class Permissions extends Plugin
 		}
 	}
 
+
 	/**
 	 * Implement $post->get_permissions($whom) to retrieve the permissions for an object
 	 * @param null $unused This is unused
@@ -191,24 +194,28 @@ class Permissions extends Plugin
 	 * @param Post|User $whom To whom to grant the permission
 	 * @return Bitmask The permissions associated to the object for this user/group
 	 */
-	function filter_post_call_get_permissions($unused, $post, $whom = null) {
+	function filter_post_call_get_permissions($unused, $post, $whom = null)	{
+		$bitmask = new Bitmask(array('read', 'edit', 'delete'));
 		if(empty($whom)) {
 			$access_masks = DB::get_column(
 				'SELECT access_mask FROM {user_permissions} up WHERE (
 					(up.grantee_id = :grantee_user AND up.grantee_type = :grantee_user_type) OR
 					(up.grantee_id = :grantee_group AND up.grantee_type = :grantee_group_type)
-					) AND up.post_id = :post_id', array(
+					) AND up.post_id = :post_id',
+				array(
 					'grantee_user' => User::identify()->id,
 					'grantee_user_type' => GRANTEE_USER,
-					'grantee_group' => User::identify()->info->works_for,
+					'grantee_group' => User::identify()->info->company,
 					'grantee_group_type' => GRANTEE_GROUP,
 					'post_id' => $post->id
 				)
 			);
-			
 			$access_mask = 0;
 			foreach($access_masks as $mask) {
 				$access_mask = $access_mask | $mask;
+			}
+			if(User::identify()->can('super_admin')) {
+				$access_mask = $bitmask->full;
 			}
 		} else {
 			$access_mask = DB::get_value(
@@ -220,10 +227,27 @@ class Permissions extends Plugin
 				)
 			);
 		}
-		
-		$bitmask = new Bitmask(array('read', 'edit', 'delete'));
 		$bitmask->value = $access_mask;
 		return $bitmask;
+	}
+
+	/**  TESTS **/
+	public function filter_list_feature_steps($feature_steps) {
+		$plugin_feature_steps = glob(dirname(__FILE__) . '/steps/step_*.php');
+		$feature_steps = array_merge($feature_steps, $plugin_feature_steps);
+		return $feature_steps;
+	}
+
+	public function filter_list_features($features) {
+		$plugin_features = glob(dirname(__FILE__) . '/tests/features/*.feature');
+		$features = array_merge($features, $plugin_features);
+		return $features;
+	}
+
+	public function filter_list_step_definitions($step_files) {
+		$plugin_step_files = glob(dirname(__FILE__) . '/tests/step_definitions/*.php');
+		$step_files = array_merge($plugin_step_files, $step_files);
+		return $step_files;
 	}
 
 	public function filter_comments_get_paramarray($paramarray) {
@@ -235,50 +259,13 @@ class Permissions extends Plugin
 		if(User::identify()->can('superuser')) {
 			switch($post->content_type) {
 				case Post::type('invoice'):
-				case Post::type('client'):
+				case Post::type('company'):
 					$actions['permissions'] = array( 'url' => URL::get('admin_permissions', array('post_id' => $post->id)), 'title' => _t( 'Manage permissions for this item' ), 'label' => _t( 'Permissions' ), 'permission' => 'edit' );
 					break;
 			}
 		}
-		
 		return $actions;
 	}
-
-	public function theme_route_admin_permissions(Theme $theme) {
-		$sql = "SELECT up.*, u.*, p.*
-				FROM {user_permissions} up
-				LEFT JOIN {users} u
-				ON u.id = up.grantee_id AND up.grantee_type = 1
-				LEFT JOIN {posts} p
-				ON p.id = up.grantee_id AND up.grantee_type = 2
-				WHERE up.post_id = :post_id
-		";
-
-		$grants = array();
-		$grant_data = DB::get_results( $sql, array('post_id' => Controller::get_var('post_id')) );
-
-		foreach($grant_data as $grant) {
-			switch($grant->grantee_type) {
-				case GRANTEE_USER:
-					$grant->grant_type_name = 'User';
-					$grant->grantee = $grant->username;
-					break;
-				case GRANTEE_GROUP:
-					$grant->grant_type_name = 'Client';
-					$grant->grantee = $grant->title;
-					break;
-				default:
-					Utils::debug('uh oh');
-			}
-			$grant->permissions = (string) $this->perm_bitmask(intval($grant->access_mask));
-			$grants[] = $grant;
-		}
-
-		$theme->post = Post::get(Controller::get_var('post_id'));
-		$theme->grants = $grants;
-		$theme->display('permissions_admin');
-	}
-
 }
 
 ?>

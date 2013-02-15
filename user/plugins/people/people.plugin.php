@@ -56,12 +56,12 @@ class People extends Plugin
 		
 			$check = User::get( $vars['invitee'] );
 			if( $check->id != '' ) {
-				$document->grant( $check, 'read');
-				DocumentsPlugin::connect_doc( $check, $vars['id'] );				
+				$document->grant( $check, array('read','edit') );
+				DocumentsPlugin::connect_doc( $check, $vars['id'] );
 				$status = 200;
 				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
 				$data = array( 'invite_link' => URL::get('display_document', array('slug' => $document->slug)) );
-				Email::send_message( 'invite', $check, $data );
+				/* Email::send_message( 'invite', $check, $data ); */
 			} else {		
 				$group = UserGroup::get('quarantine');
 				$user = new User(array(
@@ -79,7 +79,7 @@ class People extends Plugin
 				$user->info->invite_code = Utils::nonce();
 				$user->info->commit();
 				
-				$document->grant( $user, 'read');
+				$document->grant( $user, array('read','edit') );
 				
 				$status = 200;
 				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
