@@ -1,9 +1,29 @@
+window.onload = function() {
+	options = {
+		user: { 
+			username: DI.username
+		},
+		store: {
+			prefix: DI.url + '/v1',
+			urls: {
+				create:  '/create/annotation',
+				read:    '/read/annotations/:id',
+				update:  '/update/annotation/:id',
+				destroy: '/destroy/annotations/:id'
+			}
+		}
+	}
+	
+	var entry = $('#intro').annotator();
+		entry.annotator('addPlugin', 'Store', options.store );
+};
+
 var shown = false;
+
 $(document).ready(function() {	
 	styleCode();
-
 	setupPermissions();
-	
+		
 	$('#projects').mouseenter(function() {
 		if( shown == false ) {
 			$.get( DI.url + '/auth_ajax/get_documents?current=' + $(this).data('current'), function(d) {
@@ -215,42 +235,3 @@ var setupPermissions = function(user) {
 var savePermissions = function(url) {
 	$.get( url, handlePermissionsRepsonse );
 }
-
-/*
-var annotate = function(range) {
-	range = decodeURI(range);
-	var html = $('.editable').html();
-	$('body').focus();
-}
-
-$('.editable').mouseup(function() {
-	var range = document.getSelection().getRangeAt(0);
-	var newNode = document.createElement('mark');
-	range.surroundContents( newNode );
-	$('body').focus();
-	var query = {};
-	$.extend(query, DI.WSSE);
-	query.user_id = DI.user_id;
-	query.post_id = DI.post_id;
-	query.range_text = encodeURI(range);
-	
-	if( range && (range = new String(range).replace(/^\s+|\s+$/g,'')) ) {
-		url = DI.url + '/auth_ajax/save_selection';
-		$.post( url, query, handleResponse );
-	}
-});
-
-$(window).load(function() {
-	if( DI.post_id != '' ) {
-		url = DI.url + '/auth_ajax/get_selections';
-		var query = {};
-		query.post_id = DI.post_id;
-		$.get( url, query, function(d) {
-			var notes = $.parseJSON( d );
-			for( var i in notes ) {
-				annotate( notes[i].range_text );
-			}
-		});
-	}
-});
-*/

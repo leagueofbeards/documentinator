@@ -12,12 +12,11 @@
 <link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/css/annotator.min.css" media="screen" type="text/css">
 <link href="//get.pictos.cc/fonts/2135/10" rel="stylesheet" type="text/css">
               
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/bootstrap.min.js"></script>
-<script src="<?php Site::out_url('theme'); ?>/js/rangy-core.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/html5.wyswyg.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/humanmsg.js"></script>
-
+<script src="<?php Site::out_url('theme'); ?>/js/annotator.full-min.js"></script>
 <script>
 	if ( typeof(DI) == "undefined" ) { DI = {}; }
 		DI.url = "<?php Site::out_url('habari'); ?>";

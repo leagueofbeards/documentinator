@@ -489,7 +489,7 @@ i {
 		color: #ccc;
 	}
 	
-	mark {
+	mark, .mark {
 		background: #f9f69d;
 	}
 	
@@ -594,6 +594,10 @@ i {
 	
 	.other {
 		cursor: pointer;
+	}
+	
+	.popover {
+		z-index: 9999;
 	}
 	
 	/* Mobile */
