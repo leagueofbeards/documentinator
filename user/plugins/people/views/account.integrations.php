@@ -8,7 +8,7 @@
 			<hr class="large">
 			<div class="doc-section body editable" id="intro" data-button-class="all">
 				<p>Coworkspace Integrates with tons of other sites and services. Pick one below to get started.</p>
-				<p><strong>Upgrade to setup integrations with Dropbox, Amazon S3, Github or Beanstalk.</strong></p>
+				<p><strong><a href="<?php URL::out('display_billing'); ?>" title="Upgrade your account">Upgrade to Pro</a> to setup integrations with Dropbox, Amazon S3, Github or Beanstalk.</strong></p>
 			</div>
 		</div>
 	</div>

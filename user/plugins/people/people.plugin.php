@@ -56,7 +56,7 @@ class People extends Plugin
 		
 			$check = User::get( $vars['invitee'] );
 			if( $check->id != '' ) {
-				$document->grant( $check, array('read','edit') );
+				$document->grant( $check, array('read') );
 				DocumentsPlugin::connect_doc( $check, $vars['id'] );
 				$status = 200;
 				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';
@@ -79,7 +79,7 @@ class People extends Plugin
 				$user->info->invite_code = Utils::nonce();
 				$user->info->commit();
 				
-				$document->grant( $user, array('read','edit') );
+				$document->grant( $user, array('read') );
 				
 				$status = 200;
 				$message = 'We added ' . $vars['invitee'] . ' to the approvers list.';

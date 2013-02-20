@@ -154,6 +154,13 @@ i {
 		background: #ebebeb;
 		margin: 5px 20px; 
 	}
+
+	hr.small {
+		border: none;
+		height: 2px;
+		background: #eee;
+		margin: 5px 20px; 
+	}
 	
 	div.doc-section {
 		margin: 30px 0;
@@ -163,7 +170,36 @@ i {
 		.doc-section p {
 			line-height: 1.7em;
 		}
-
+		
+		.comments {
+			margin: 20px 0;
+			outline: none;
+			padding: 0px 20px;			
+		}
+			.comments ul {
+				margin-top: 10px;
+			}
+				.comments ul li + li {
+					border-top: 1px solid #eee;
+					padding-top: 10px;
+				}
+				
+			.comments #cf_commenter, .comments #cf_email, .comments #cf_url {
+				display:none;
+			}
+			.comments #comment_content {
+				width: 98%;
+			}
+			
+			.comments .comment-meta {
+				font-size: 12px;
+			}
+			.comment-content .gravatar {
+				width: 35px;
+				height: 35px;
+				margin-top: 5px;
+				margin-right: 10px;
+			}
 	#typography blockquote {
 		margin-top: 20px; 
 	}
@@ -244,11 +280,12 @@ i {
 
 	.page {
 		position:relative;
-		z-index:100;
+		z-index: 1;
 		box-shadow: 0px 0px 5px #ddd;
 		background:#fff;
 		padding-bottom: 5px;
 		min-height: 400px;
+		margin-bottom: 40px;
 	}
 	
 	.contributor_link {
@@ -596,13 +633,17 @@ i {
 		cursor: pointer;
 	}
 	
-	.popover {
-		z-index: 9999;
-	}
-	
 	.annotator-edit, .annotator-delete {
 		display:none !important;
 	}
+	
+	.annotation {
+		font-size: 18px;
+	}
+		.annotation span {
+			font-style: italic;
+			font-weight: bold;
+		}
 	
 	/* Mobile */
 	@media only screen and (max-width: 767px) {

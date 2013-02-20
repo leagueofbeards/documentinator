@@ -114,6 +114,10 @@ class AnnotatePlugin extends Plugin
 
 	public function theme_route_display_annotation($theme) {
 		$theme->annotation = Annotation::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
+		$theme->person = User::get( $theme->annotation->user_id );
+		$theme->document = Post::get( array('id' => $theme->annotation->connection_id) );
+		$theme->title = 'View Annotation';
+		
 		$theme->display( 'annotation.single' );
 	}
 

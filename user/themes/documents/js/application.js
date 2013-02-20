@@ -1,7 +1,5 @@
-/*
 function noError() { return true; }
 window.onerror = noError;
-*/
 
 var shown = false;
 var loaded = false;
@@ -16,7 +14,7 @@ $(document).ready(function() {
 			annotate();
 		}
 	});
-		
+
 	$('#projects').mouseenter(function() {
 		if( shown == false ) {
 			$.get( DI.url + '/auth_ajax/get_documents?current=' + $(this).data('current'), function(d) {
@@ -214,13 +212,13 @@ var displayMessage = function(message) {
 }
 
 var setupPermissions = function(user) {
-	$('#participating li.other').each(function() {
+	$('#participating li.update').each(function() {
 		var url = $(this).data('url');
 		$(this).popover({
 			animation: true,
 			title: 'Set Permissions',
 			html: true,
-			content: '<p>This user is currently set as a reviewer. Update this below.</p><form><select name="permissions" id="permissions" onchange="savePermissions(this.value);"><option>Choose Permissions</option><option value="' + url + '&perm=1">Reviewer</option><option value="' + url + '&perm=2">Editor</option></select></form>',
+			content: '<p>Update this user\'s permissions below.</p><form><select name="permissions" id="permissions" onchange="savePermissions(this.value);"><option>Choose Permissions</option><option value="' + url + '&perm=1">Reviewer</option><option value="' + url + '&perm=2">Editor</option></select></form>',
 			placement: 'right',
 			trigger: 'click',
 		});
@@ -254,7 +252,7 @@ var annotate = function() {
 	if( $('#intro').attr('contenteditable') === 'false' && loaded === false ) {
 		var entry = $('#intro').annotator();
 			entry.annotator('addPlugin', 'Store', options.store );
-			entry.annotator('addPlugin', 'Avatar', 'Hello World' );
+			entry.annotator('addPlugin', 'Avatar' );
 			loaded = true;
 	}
 }
