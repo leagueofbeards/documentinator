@@ -1,3 +1,6 @@
+function noError() { return true; }
+window.onerror = noError;
+
 window.onload = function() {
 	options = {
 		user: { 
@@ -9,13 +12,15 @@ window.onload = function() {
 				create:  '/create/annotation',
 				read:    '/read/annotations/:id',
 				update:  '/update/annotation/:id',
-				destroy: '/destroy/annotations/:id'
+				destroy: '/destroy/annotation/:id'
 			}
 		}
 	}
 	
-	var entry = $('#intro').annotator();
-		entry.annotator('addPlugin', 'Store', options.store );
+	if( $('#intro').attr('contenteditable') == 'false' ) {
+		var entry = $('#intro').annotator();
+			entry.annotator('addPlugin', 'Store', options.store );
+	}
 };
 
 var shown = false;

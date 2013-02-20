@@ -826,6 +826,7 @@
         }, d.prototype.loadAnnotations = function () {
             return this._apiRequest("read", null, this._onLoadAnnotations)
         }, d.prototype._onLoadAnnotations = function (a) {
+	        a = a.rows;
             return a == null && (a = []), this.annotations = a, this.annotator.loadAnnotations(a.slice())
         }, d.prototype.loadAnnotationsFromSearch = function (a) {
             return this._apiRequest("search", a, this._onLoadAnnotationsFromSearch)

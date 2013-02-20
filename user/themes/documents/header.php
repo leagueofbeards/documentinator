@@ -16,6 +16,7 @@
 <script src="<?php Site::out_url('theme'); ?>/js/bootstrap.min.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/html5.wyswyg.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/humanmsg.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/underscore.min.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/annotator.full-min.js"></script>
 <script>
 	if ( typeof(DI) == "undefined" ) { DI = {}; }

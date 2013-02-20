@@ -237,8 +237,8 @@ class DocumentsPlugin extends Plugin
 		$user = User::identify();
 		
 		$args = array(
-					'title'			=>	$vars['title'],
-					'slug'			=>	Utils::slugify( $vars['title'] ),
+					'title'			=>	strip_tags($vars['title']),
+					'slug'			=>	Utils::slugify( strip_tags($vars['title']) ),
 					'content'		=>	$vars['content'] ? $vars['content'] : '',
 					'user_id'		=>	$user->id,
 					'pubdate'		=>	DateTime::date_create( date(DATE_RFC822) ),
