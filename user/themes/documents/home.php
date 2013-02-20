@@ -22,12 +22,12 @@
 				</div>
 				<div class="three columns" style="float:right;">
 					<div class="grid_2 columns add_doc">
-						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
+						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document">n</a></i></p>
 					</div>
 				</div>
 				<?php } else { ?>
 					<div class="grid_2 columns add_doc">
-						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document" role="button" data-toggle="modal">n</a></i></p>
+						<p><i class="icon-add"><a href="<?php URL::out('display_create_doc'); ?>" title="Add a new Document">n</a></i></p>
 					</div>
 				<?php } ?>
 			</div>

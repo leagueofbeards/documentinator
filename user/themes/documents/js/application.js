@@ -1,5 +1,7 @@
+/*
 function noError() { return true; }
 window.onerror = noError;
+*/
 
 var shown = false;
 var loaded = false;

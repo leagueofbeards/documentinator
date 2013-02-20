@@ -24,6 +24,8 @@
 		DI.url = "<?php Site::out_url('habari'); ?>";
 		DI.user_id = "<?php echo $user->id; ?>";
 		DI.username = "<?php echo $user->username; ?>";
+		DI.displayname = "<?php echo $user->displayname; ?>";
+		DI.avatar = '<?php Gravatar::show( $user->email ); ?>';
 		DI.post_id = "<?php echo $theme->post_id ? $theme->post_id : ''; ?>";
 		DI.WSSE = <?php echo json_encode(Utils::WSSE()); ?>;
 		DI.WSSE_update = '<?php echo URL::get('auth_ajax', array('context' => 'wsse_update')); ?>';

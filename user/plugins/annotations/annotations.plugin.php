@@ -233,12 +233,12 @@ class AnnotatePlugin extends Plugin
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
 				
 		switch( count($bits) ) {
-			case 6 :
+			case 5 :
 				$doc = array_pop($bits);
 				$prefix = array_pop($bits);
 				$post = Document::get( array('slug' => $doc) );
 			break;
-			case 7 :
+			case 6 :
 				$pge = array_pop($bits);
 				$doc = array_pop($bits);
 				$document = Document::get( array('slug' => $doc) );
