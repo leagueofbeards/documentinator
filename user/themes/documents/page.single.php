@@ -15,4 +15,7 @@
 		</div>
 	</div>
 </div>
+<script>
+	DI.page = "<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->slug) ); ?>";
+</script>
 <?php $theme->display('footer'); ?>

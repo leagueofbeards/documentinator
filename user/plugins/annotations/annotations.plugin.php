@@ -38,6 +38,7 @@ class AnnotatePlugin extends Plugin
 			$paramarray['post_join'][] = '{annotations}';
 			$default_fields = isset($paramarray['default_fields']) ? $paramarray['default_fields'] : array();
 			$default_fields['{annotations}.text'] = '';
+			$default_fields['{annotations}.connection_id'] = '';
 			$default_fields['{annotations}.url'] = '';
 			$default_fields['{annotations}.ranges'] = '';
 			$default_fields['{annotations}.permissions'] = '';
@@ -156,15 +157,7 @@ class AnnotatePlugin extends Plugin
 		return $r;
 	}
 
-	/* REST APIs*/
-	public function rest_get__v1() {
-		$return = array(
-				'name' => 'Annotator Store API',
-				'version' => '2.0.0'
-				);
-		echo json_encode( $return );
-	}
-	
+	/* REST APIs*/	
 	public function rest_get__v1_annotations__postid($params) {
 		$annotations = $this->get_selections( $params['postid'] );
 		echo $annotations;
@@ -179,14 +172,14 @@ class AnnotatePlugin extends Plugin
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
 		$return = array();
 		$rows = array();
-		
+				
 		switch( count($bits) ) {
-			case 6 :
+			case 5 :
 				$doc = array_pop($bits);
 				$prefix = array_pop($bits);
 				$post = Document::get( array('slug' => $doc) );
 			break;
-			case 7 :
+			case 6 :
 				$pge = array_pop($bits);
 				$doc = array_pop($bits);
 				$document = Document::get( array('slug' => $doc) );
@@ -194,11 +187,12 @@ class AnnotatePlugin extends Plugin
 				$post = Page::get( array('slug' => $pge, 'document_id' => $document->id) );
 			break;
 		}
-		
-		$count = Annotations::get( array('connection_id' => $post->id, 'count' => true) );
+			
+		$count = Annotations::get( array('connection_id' => $post->id, 'count' => true) );	
 		$annotations = Annotations::get( array('connection_id' => $post->id) );
 
 		foreach( $annotations as $annotation ) {
+			$person = User::get_by_id( $annotation->user_id );
 			$ranges = json_decode( $annotation->ranges );
 			$row = array();
 			$row['uri'] = $annotation->url;
@@ -210,7 +204,8 @@ class AnnotatePlugin extends Plugin
 			$row['created'] = $annotation->created;
 			$row['consumer'] = 'coworkspace';
 			$row['text'] = $annotation->text;
-			$row['user'] = User::get_by_id( $annotation->user_id )->displayname;			
+			$row['user'] = $person->displayname;
+			$row['avatar'] = Gravatar::get( $person->email );
 			
 			$rows[] = $row;
 		}
@@ -236,7 +231,7 @@ class AnnotatePlugin extends Plugin
 		$payload = json_decode($payload);
 		$id = rand() . time();		
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
-		
+				
 		switch( count($bits) ) {
 			case 6 :
 				$doc = array_pop($bits);
@@ -275,10 +270,6 @@ class AnnotatePlugin extends Plugin
 		}
 	}
 	
-	public function rest_post_v1_destroy_annotation__annoid($params) {
-		$user = User::identify();
-		$annotation = Annotation::get( array('id' => $params['annoid']) );
-		var_dump($annotation); exit();
-	}
+	public function rest_post_v1_destroy_annotation__annoid($params) {}
 }
 ?>

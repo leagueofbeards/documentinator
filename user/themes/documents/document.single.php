@@ -21,5 +21,8 @@
 			</form>
 		</div>
 	</div>
+	<script>
+		DI.page = "<?php echo $document->permalink; ?>";
+	</script>
 </div>
 <?php $theme->display('footer'); ?>

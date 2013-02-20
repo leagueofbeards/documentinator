@@ -1,33 +1,19 @@
 function noError() { return true; }
 window.onerror = noError;
 
-window.onload = function() {
-	options = {
-		user: { 
-			username: DI.username
-		},
-		store: {
-			prefix: DI.url + '/v1',
-			urls: {
-				create:  '/create/annotation',
-				read:    '/read/annotations/:id',
-				update:  '/update/annotation/:id',
-				destroy: '/destroy/annotation/:id'
-			}
-		}
-	}
-	
-	if( $('#intro').attr('contenteditable') == 'false' ) {
-		var entry = $('#intro').annotator();
-			entry.annotator('addPlugin', 'Store', options.store );
-	}
-};
-
 var shown = false;
+var loaded = false;
 
-$(document).ready(function() {	
+$(document).ready(function() {
 	styleCode();
 	setupPermissions();
+	annotate();
+	
+	$('#intro').click(function() {
+		if( $(this).attr('contenteditable') === 'false' ) {
+			annotate();
+		}
+	});
 		
 	$('#projects').mouseenter(function() {
 		if( shown == false ) {
@@ -59,9 +45,15 @@ $(document).ready(function() {
 			// history.pushState(null, null, '/some-path');
 			return false;
 		} else {
-			$('#editor').fadeIn();
-			$('.article header h1').attr('contenteditable', true);
-			$('.editable').attr('contenteditable', true);
+			$('.inplace').load( DI.page + ' #intro', function() {
+				loaded = false;
+				$('#editor').fadeIn();
+				$('.editable').attr('contenteditable', true);
+				$('.article header h1').attr('contenteditable', true);
+				$('.editable').attr('contenteditable', true);
+				$('#save .save').addClass('update').html('<i class="icon-save">s</i>');
+			});
+
 			return false;
 		}
 	});
@@ -239,4 +231,28 @@ var setupPermissions = function(user) {
 
 var savePermissions = function(url) {
 	$.get( url, handlePermissionsRepsonse );
+}
+
+var annotate = function() {
+	options = {
+		user: { 
+			username: DI.username
+		},
+		store: {
+			prefix: DI.url + '/v1',
+			urls: {
+				create:  '/create/annotation',
+				read:    '/read/annotations/:id',
+				update:  '/update/annotation/:id',
+				destroy: '/destroy/annotation/:id'
+			}
+		}
+	}
+		
+	if( $('#intro').attr('contenteditable') === 'false' && loaded === false ) {
+		var entry = $('#intro').annotator();
+			entry.annotator('addPlugin', 'Store', options.store );
+			entry.annotator('addPlugin', 'Avatar', 'Hello World' );
+			loaded = true;
+	}
 }

@@ -18,6 +18,7 @@
 <script src="<?php Site::out_url('theme'); ?>/js/humanmsg.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/underscore.min.js"></script>
 <script src="<?php Site::out_url('theme'); ?>/js/annotator.full-min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/annotator.avatar.js"></script>
 <script>
 	if ( typeof(DI) == "undefined" ) { DI = {}; }
 		DI.url = "<?php Site::out_url('habari'); ?>";
