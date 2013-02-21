@@ -1,7 +1,7 @@
 <?php namespace Habari; ?>
 <?php $theme->display('header'); ?>
 <div class="container">
-	<?php $theme->display('sidebar'); ?>
+	<?php $theme->display('document.sidebar'); ?>
 	<div class="thirteen columns offset-by-three content">
 		<?php if( $document->is_approved == false ) { ?>
 		<?php $theme->display('editor'); ?>

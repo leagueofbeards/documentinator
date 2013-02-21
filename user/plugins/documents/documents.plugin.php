@@ -77,6 +77,9 @@ class DocumentsPlugin extends Plugin
 					$out = $this->get_approval_summary(self::APPROVAL_TYPE_APPROVAL, $document);
 				break;
 				case 'is_approved' :
+					$out = $this->check_approved(self::APPROVAL_TYPE_APPROVAL, $document);
+				break;
+				case 'approval_status' :
 					$out = $this->get_approvals(self::APPROVAL_TYPE_APPROVAL, $document);
 				break;
 			}
@@ -89,6 +92,25 @@ class DocumentsPlugin extends Plugin
 		$this->add_rule('"d"/"new"', 'display_create_doc');
 		$this->add_rule('"d"/slug', 'display_document');
 		return $rules;
+	}
+
+	private function check_approved($approval_type, $document) {
+		$ids = array();
+		$p_count = Pages::get( array('document_id' => $document->id, 'count' => true) );
+		$a_count = Pages::get( array('document_id' => $document->id, 'approved' => 1, 'count' => true) );
+		$pages = Pages::get( array('document_id' => $document->id) );
+		
+		foreach( $pages as $page ) {
+			$ids[] = $page->id;
+		}
+		
+		$approvals = DB::get_value( "SELECT count(id) FROM {approvals} WHERE post_id IN(?) AND approval_type = ? AND approval_status = ?", array(implode(',', $ids), $approval_type, self::APPROVAL_STATUS_APPROVED) );
+		
+		if( $a_count != $p_count ) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private function get_approvals($approval_type, $document) {
@@ -176,6 +198,30 @@ class DocumentsPlugin extends Plugin
 		return $out;
 	}
 
+	private function update_approval($record) {
+		$approvers = $this->count_approvers( $record );
+		$approved = DB::get_value('SELECT count(*) FROM {approvals} WHERE post_id = ? AND approval_type = ? AND approval_status = ?', array($record, self::APPROVAL_TYPE_APPROVAL, self::APPROVAL_STATUS_APPROVED) );	
+				
+		if( $approved == $approvers ) {
+			$page = Page::get( array('id' => $record) );
+			$page->approved = 1;
+			$page->update();
+		}
+	}
+
+	public function count_approvers($document) {
+		$u_ids = array();
+		$doc = Document::get( array('id' => Page::get( array('id' => $document))->document_id) );
+		$ids = DB::get_results( "SELECT user_id FROM {user_documents} WHERE document_id = ?", array($doc->id) );
+		$u_ids[] = $doc->user_id;
+		
+		foreach( $ids as $id ) {
+			$u_ids[] = $id->user_id;
+		}
+				
+		return count( $u_ids );
+	}
+
 	public static function approval_status($document, $user) {
 		$ret;
 		$status = DB::get_row(
@@ -211,10 +257,12 @@ class DocumentsPlugin extends Plugin
 		$args = array( 'user_id' => $user->id, 'document_id' => $doc );
 		DB::insert( DB::table('user_documents'), $args );
 	}
-	
+		
 	public function get_approvers($document) {
 		$u_ids = array();
 		$ids = DB::get_results( "SELECT user_id FROM {user_documents} WHERE document_id = ?", array($document) );
+		$doc = Document::get( array('id' => $document) );
+				
 		foreach( $ids as $id ) {
 			$u_ids[] = $id->user_id;
 		}
@@ -287,7 +335,14 @@ class DocumentsPlugin extends Plugin
 		$user = User::identify();
 		$document_id = $data->handler_vars['id'];
 		$action = $data->handler_vars['action'];
-		$doc = Document::get( array('id' => $document_id) );
+		$doc = Post::get( array('id' => $document_id) );
+		
+		if( $doc->content_type == Post::type('document') ) {
+			$doc_id = $doc->id;
+		} elseif( $doc->content_type == Post::type('docpage') ) {
+			$doc_id = Page::get( array('id' => $document_id) )->document_id;
+		}
+		
 		switch($action) {
 			case 'approve':
 				$approval_status = self::APPROVAL_STATUS_APPROVED;
@@ -315,6 +370,10 @@ class DocumentsPlugin extends Plugin
 				'approval_type' => self::APPROVAL_TYPE_APPROVAL,
 			)
 		);
+
+		if( $doc->content_type == Post::type('docpage') ) {
+			$this->update_approval( $doc->id );
+		}
 
 		$ar = new AjaxResponse(200, _t('You %s ' . $doc->title, array($averb)));
 		$ar->html('#participating', '#');
