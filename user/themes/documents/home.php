@@ -12,7 +12,7 @@
 					<?php foreach( $docs as $doc ) { ?>
 						<div id="doc-<?php echo $doc->id; ?>" class="doc_container grid_2 columns">
 							<div class="document">
-								<?php echo $doc->is_approved; ?>
+								<?php echo $doc->approval_status; ?>
 								<i class="icon-doc"><a href="<?php URL::out('display_document', array('slug' => $doc->slug)); ?>" title="">D</a></i>
 								<div class="doc_status"><?php echo $doc->approval_summary; ?></div>
 							</div>

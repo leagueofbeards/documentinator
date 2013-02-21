@@ -114,35 +114,7 @@ class DocumentsPlugin extends Plugin
 	}
 
 	private function get_approvals($approval_type, $document) {
-		$approved = DB::get_value(
-			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
-			array(
-				'post_id' => $document->id,
-				'approval_type' => $approval_type,
-				'approval_status' => self::APPROVAL_STATUS_APPROVED,
-			)
-		);
-		
-		$rejected = DB::get_value(
-			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type AND approval_status = :approval_status',
-			array(
-				'post_id' => $document->id,
-				'approval_type' => $approval_type,
-				'approval_status' => self::APPROVAL_STATUS_REJECTED,
-			)
-		);
-		
-		$total = DB::get_value(
-			'SELECT count(*) FROM {approvals} WHERE post_id = :post_id AND approval_type = :approval_type',
-			array(
-				'post_id' => $document->id,
-				'approval_type' => $approval_type,
-			)
-		);
-		
-		$out = '';
-		
-		if( $approved == $total && $total != 0 ) {
+		if($document->is_approved == true ) {
 			$out = '<span class="status_icon approved"><i class="icon-approved">c</i></span>';
 		} else {
 			$out = false;
@@ -222,7 +194,7 @@ class DocumentsPlugin extends Plugin
 		return count( $u_ids );
 	}
 
-	public static function approval_status($document, $user) {
+	public static function approved($document, $user) {
 		$ret;
 		$status = DB::get_row(
 			'SELECT approval_type, approval_status FROM {approvals} WHERE post_id = :post_id AND user_id = :user_id',
@@ -231,7 +203,7 @@ class DocumentsPlugin extends Plugin
 				'user_id' => $user->id,
 			)
 		);
-		
+						
 		switch($status->approval_status) {
 			case self::APPROVAL_STATUS_APPROVED:
 				$ret = true;
