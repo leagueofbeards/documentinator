@@ -111,6 +111,10 @@ class DocumentsPlugin extends Plugin
 		
 		$approvals = DB::get_value( "SELECT count(id) FROM {approvals} WHERE post_id IN(?) AND approval_type = ? AND approval_status = ?", array(implode(',', $ids), $approval_type, self::APPROVAL_STATUS_APPROVED) );
 		
+		if( $a_count === '0' ) {
+			return false;
+		}
+		
 		if( $a_count != $p_count ) {
 			return false;
 		} else {
