@@ -10,6 +10,11 @@ class DocumentsPlugin extends Plugin
 	const APPROVAL_STATUS_APPROVED = 1;
 	const APPROVAL_STATUS_REJECTED = 2;
 
+	public function filter_autoload_dirs($dirs) {
+		$dirs[] = __DIR__ . '/classes';
+		return $dirs;
+	}
+
 	public function action_init() {
 		DB::register_table( 'documents' );
 		DB::register_table( 'user_documents' );
@@ -389,6 +394,27 @@ class DocumentsPlugin extends Plugin
 		$ar = new AjaxResponse( 200, $message, null );
 		$ar->html('#participating', '#');
 		$ar->out();
+	}
+	
+	public function action_auth_ajax_export_document($data) {
+		$vars = $data->handler_vars;
+		$document = Document::get( array('id' => $vars['document_id']) );
+		$pages = Pages::get( array('document_id' => $document->id) );
+		
+		$objects = array( 'document' => array('content' => $document, 'fields' => array('title', 'slug', 'content')), 'page' => array('content' => $pages, 'fields' => array('title', 'slug', 'content')) );
+		$assets = array( 'style.css', 'prettify.css' );
+		
+		$args = array(
+					'connected'			=>	array('parent' => $document, 'items' => 'page'),
+					'export_name'		=>	$document->slug,
+					'template_types'	=>	array('document', 'page'),
+					'template_location'	=>	__DIR__ . '/export_templates',
+					'objects'			=>	$objects,
+					'export_location'	=>	'exports',
+					'assets'			=>	$assets,
+				);
+		
+		Exporter::parse( $args );
 	}
 }
 ?>

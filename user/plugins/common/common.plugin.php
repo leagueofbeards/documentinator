@@ -90,7 +90,7 @@ class Common extends Plugin
 	}
 	
 	public static function create_dir($path) {
-		if ( !is_dir( $path ) ){
+		if ( !is_dir( $path ) ) {
 			mkdir( $path, 0777 );
 		}
 	}
