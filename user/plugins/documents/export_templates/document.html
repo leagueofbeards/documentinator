@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{title}</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="style.css" media="screen" type="text/css">
+<link type="text/css" media="screen" rel="stylesheet" href="prettify.css">
+</head>
+<body>
+<div id="masthead" class="container">
+	<header><h1><a href="{link}" title="Go Home">{title}</a></h1></header>
+</div>
+<div class="container">
+	<div class="three columns sidebar">
+	<nav>
+		<h4 id="projects"><a href="{link}" title="Go Home">{title}</a></h4>
+		<hr style="margin-bottom:10px;">
+		<ul id="pages">
+			{pages}
+		</ul>
+	</nav>
+	</div>
+	<div class="thirteen columns offset-by-three content">
+		<div class="article page">
+			<header><h1>{title}</h1></header>
+			<hr class="large">
+			<div class="doc-section body editable" id="intro" name="content">
+				{content}
+			</div>
+		</div>
+	</div>
+</div>
+<footer></footer>
+</body>
+</html>
