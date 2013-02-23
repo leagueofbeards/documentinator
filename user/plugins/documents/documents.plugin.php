@@ -190,6 +190,15 @@ class DocumentsPlugin extends Plugin
 		}
 	}
 
+	private function force_approval($document) {
+		$pages = Pages::get( array('document_id' => $document->id, 'nolimit' => true) );
+
+		foreach( $pages as $page ) {
+			$page->approved = 1;
+			$page->update();
+		}
+	}
+
 	public function count_approvers($document) {
 		$u_ids = array();
 		$doc = Document::get( array('id' => Page::get( array('id' => $document))->document_id) );
@@ -419,6 +428,24 @@ class DocumentsPlugin extends Plugin
 				);
 		
 		Exporter::parse( $args );
+	}
+	
+	public function action_auth_ajax_approve_document($data) {
+		$vars = $data->handler_vars;
+		$document = Document::get( array('id' => $vars['document_id']) );
+
+		try {
+			$this->force_approval( $document );
+			$status = 200;
+			$message = 'Your document has been approved.';	
+		} catch( Exception $e ) {
+			$status = 401;
+			$message = 'We couldn\'t approve your document. Please try again later.';
+		}
+		
+		$ar = new AjaxResponse( 200, $message, null );
+		$ar->html('#participating', '#');
+		$ar->out();
 	}
 }
 ?>
