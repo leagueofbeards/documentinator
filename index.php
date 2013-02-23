@@ -7,8 +7,8 @@
  * @package Habari
  */
 
-//error_reporting(E_STRICT);
-//define('DEBUG', TRUE);
+// error_reporting(E_STRICT);
+// define('DEBUG', TRUE);
 
 /**
  * Define the constant HABARI_PATH.
