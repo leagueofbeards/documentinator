@@ -48,7 +48,7 @@ ADD_PERMISSIONS_TABLE;
 		$types = array_intersect_key(
 			$types,
 			array(
-				'document' => 1,
+				'document' => 1
 			)
 		);
 		

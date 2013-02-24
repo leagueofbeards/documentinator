@@ -10,7 +10,7 @@ $(document).ready(function() {
 	styleCode();
 	setupPermissions();
 	annotate();
-	
+
 	$('#intro').click(function() {
 		if( $(this).attr('contenteditable') === 'false' ) {
 			annotate();
@@ -251,7 +251,7 @@ var annotate = function() {
 		}
 	}
 		
-	if( $('#intro').attr('contenteditable') === 'false' && loaded === false ) {
+	if( $('#intro').attr('contenteditable') === 'false' || $('#intro').attr('contenteditable') == undefined && loaded === false ) {
 		var entry = $('#intro').annotator();
 			entry.annotator('addPlugin', 'Store', options.store );
 			entry.annotator('addPlugin', 'Avatar' );

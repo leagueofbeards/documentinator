@@ -11,6 +11,11 @@ class AnnotatePlugin extends Plugin
 		$this->create_annotations_table();
 	}
 
+	public function filter_autoload_dirs($dirs) {
+		$dirs[] = __DIR__ . '/classes';
+		return $dirs;
+	}
+
 	public function action_plugin_deactivation ( $file='' ) {}
 
 	private function create_annotations_table() {
@@ -113,7 +118,7 @@ class AnnotatePlugin extends Plugin
 	}
 
 	public function theme_route_display_annotation($theme) {
-		$theme->annotation = Annotation::get( array('slug' => $theme->matched_rule->named_arg_values['slug']) );
+		$theme->annotation = Annotation::get( array('slug' => $theme->matched_rule->named_arg_values['slug'], 'ignore_permissions' => true) );
 		$theme->person = User::get( $theme->annotation->user_id );
 		$theme->document = Post::get( array('id' => $theme->annotation->connection_id) );
 		$theme->title = 'View Annotation';
@@ -178,12 +183,12 @@ class AnnotatePlugin extends Plugin
 		$rows = array();
 				
 		switch( count($bits) ) {
-			case 5 :
+			case 6 :
 				$doc = array_pop($bits);
 				$prefix = array_pop($bits);
 				$post = Document::get( array('slug' => $doc) );
 			break;
-			case 6 :
+			case 7 :
 				$pge = array_pop($bits);
 				$doc = array_pop($bits);
 				$document = Document::get( array('slug' => $doc) );
@@ -191,9 +196,9 @@ class AnnotatePlugin extends Plugin
 				$post = Page::get( array('slug' => $pge, 'document_id' => $document->id) );
 			break;
 		}
-			
-		$count = Annotations::get( array('connection_id' => $post->id, 'count' => true) );	
-		$annotations = Annotations::get( array('connection_id' => $post->id) );
+		
+		$count = Annotations::get( array('connection_id' => $post->id, 'count' => true, 'ignore_permissions' => true) );
+		$annotations = Annotations::get( array('connection_id' => $post->id, 'ignore_permissions' => true) );
 
 		foreach( $annotations as $annotation ) {
 			$person = User::get_by_id( $annotation->user_id );
@@ -237,12 +242,12 @@ class AnnotatePlugin extends Plugin
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
 				
 		switch( count($bits) ) {
-			case 5 :
+			case 6 :
 				$doc = array_pop($bits);
 				$prefix = array_pop($bits);
 				$post = Document::get( array('slug' => $doc) );
 			break;
-			case 6 :
+			case 7 :
 				$pge = array_pop($bits);
 				$doc = array_pop($bits);
 				$document = Document::get( array('slug' => $doc) );
@@ -263,7 +268,8 @@ class AnnotatePlugin extends Plugin
 			'permissions' => serialize($payload->permissions),
 			'created' => date(c),
 			'updated' => date(c),
-			'content_type' => Post::type('annotation')
+			'content_type' => Post::type('annotation'),
+			'status' => Post::status('published'),
 		);
 		
 		if( ($post->id != '') ) {
