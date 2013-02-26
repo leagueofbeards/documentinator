@@ -320,6 +320,13 @@ class DocumentsPlugin extends Plugin
 		$ar = new AjaxResponse( $status, $message, null );
 		$ar->out();
 	}
+
+	public function action_auth_ajax_save_rendered_content($data) {
+		$vars = $data->handler_vars;	
+		$document = Document::get( array('id' => $vars['page_id']) );
+		$document->cached_content = $vars['content'];
+		$document->update();
+	}
 			
 	public function action_auth_ajax_approval($data) {
 		$user = User::identify();
@@ -411,23 +418,23 @@ class DocumentsPlugin extends Plugin
 	
 	public function action_auth_ajax_export_document($data) {
 		$vars = $data->handler_vars;
-		$document = Document::get( array('id' => $vars['document_id']) );
-		$pages = Pages::get( array('document_id' => $document->id) );
-		
-		$objects = array( 'document' => array('content' => $document, 'fields' => array('title', 'slug', 'content')), 'page' => array('content' => $pages, 'fields' => array('title', 'slug', 'content')) );
+		$document = Document::get( array('id' => $vars['id']) );
+		$pages = Pages::get( array('document_id' => $document->id, 'orderby' =>  'id ASC') );
+		$templates = array('document', 'page');
+		$objects = array( 'document' => array('content' => $document, 'fields' => array('title', 'slug', 'cached_content')), 'page' => array('content' => $pages, 'fields' => array('title', 'slug', 'cached_content')) );
 		$assets = array( 'style.css', 'prettify.css' );
 		
 		$args = array(
 					'connected'			=>	array('parent' => $document, 'items' => 'page'),
 					'export_name'		=>	$document->slug,
-					'template_types'	=>	array('document', 'page'),
+					'template_types'	=>	$templates,
 					'template_location'	=>	__DIR__ . '/export_templates',
 					'objects'			=>	$objects,
 					'export_location'	=>	'exports',
 					'assets'			=>	$assets,
 				);
 		
-		Exporter::parse( $args );
+		Exporter::generate( $args, 'pdf' );
 	}
 	
 	public function action_auth_ajax_approve_document($data) {

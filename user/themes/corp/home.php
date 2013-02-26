@@ -11,7 +11,7 @@
 <div id="features_overview">
 	<div class="container">
 		<div class="columns eight alpha">
-			<div class="feature columns eight selected">
+			<div class="feature columns eight">
 				<div class="one columns alpha"><i class="icon-start">p</i></div>
 				<div class="six columns omega">
 					<strong>Start it together</strong>
@@ -47,15 +47,6 @@
 					<img src="<?php Site::out_url('theme'); ?>/images/create_doc_poster.png" class="scale-with-grid">
 				</div>	
 				<p>Creating a document and inviting collaborators is as easy as pie. Tasty, tasty pie. Simply click the giant "new document" button to get started.</p>
-			</div>
-			<div class="column eight small_videos">
-				<div class="columns three alpha">
-					<span><i class="icon-play">v</i></span>
-					<img src="<?php Site::out_url('theme'); ?>/images/add_user_poster.png" class="scale-with-grid">
-				</div>
-				<div class="columns three omega">
-					<p>Adding people is also staggeringly simple. Know their email? Type it in and done.</p>
-				</div>
 			</div>
 		</div>
 	</div>

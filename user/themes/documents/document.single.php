@@ -23,6 +23,7 @@
 	</div>
 	<script>
 		DI.page = "<?php echo $document->permalink; ?>";
+		DI.page_id = "<?php echo $document->id; ?>";
 	</script>
 </div>
 <?php $theme->display('footer'); ?>

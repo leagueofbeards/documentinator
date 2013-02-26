@@ -43,8 +43,17 @@ $(document).ready(function() {
 			obj.title = title;
 			var url = $('.inplace').attr('action');
 			$.post( url, obj, handleResponse  );
+
 			styleCode();
-			// history.pushState(null, null, '/some-path');
+			
+			obj.page_id = DI.page_id;
+			obj.content = $('.editable').html();
+			obj.nonce = DI.WSSE.nonce;
+			obj.timestamp = DI.WSSE.timestamp;
+			obj.digest = DI.WSSE.digest;
+			
+			$.post( DI.url + '/auth_ajax/save_rendered_content', obj );
+
 			return false;
 		} else {
 			$('.inplace').load( DI.page + ' #intro', function() {
@@ -206,7 +215,7 @@ var styleCode = function() {
 		}
 	});
 	
-	if (a) { prettyPrint() } 
+	if(a) { prettyPrint() }
 }
 
 var displayMessage = function(message) {
