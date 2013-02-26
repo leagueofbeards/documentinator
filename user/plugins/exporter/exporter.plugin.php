@@ -154,7 +154,7 @@ class Exporter extends Plugin
 			$dompdf = new \DOMPDF();
 			$dompdf->load_html( $rawPDF );
 			$dompdf->render();
-			$dompdf->stream( $export_dir . '.pdf' );
+			$dompdf->stream( $args['export_name'] . '.pdf' );
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}

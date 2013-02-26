@@ -322,10 +322,10 @@ class DocumentsPlugin extends Plugin
 	}
 
 	public function action_auth_ajax_save_rendered_content($data) {
-		$vars = $data->handler_vars;	
-		$document = Document::get( array('id' => $vars['page_id']) );
-		$document->cached_content = $vars['content'];
-		$document->update();
+		$vars = $data->handler_vars;
+		$post = Post::get( array('id' => $vars['page_id']) );
+		$post->cached_content = $vars['content'];
+		$post->update();
 	}
 			
 	public function action_auth_ajax_approval($data) {
