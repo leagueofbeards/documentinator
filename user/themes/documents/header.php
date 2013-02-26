@@ -38,8 +38,8 @@
 	<h1><a href="<?php Site::out_url('habari'); ?>" title="Go Home"><?php Options::out('title'); ?></a></h1>
 	<menu>
 		<ul>
-		<li id="auth"><a href="<?php Site::out_url('habari'); ?>/auth/logout">Logout</a></li>
-		<li><a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>" title="Your Account"><?php Gravatar::show( $user->email ); ?></a></li>
+			<li id="auth"><a href="<?php Site::out_url('habari'); ?>/auth/logout">Logout</a></li>
+			<li><a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>" title="Your Account"><?php Gravatar::show( $user->email ); ?></a></li>
 		</ul>
 	</menu>
 </header>
