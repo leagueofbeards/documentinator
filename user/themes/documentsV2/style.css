@@ -1,0 +1,172 @@
+@import url('css/base.css');
+@import url('css/skeleton.css');
+
+/* Documentation Styles
+================================================== */
+
+body {
+	background: #232323;
+	-webkit-font-smoothing: antialiased;
+	margin-top: 100px;
+}
+
+#masthead {
+	background: #1c1c1c;
+	width: 100%;
+	height: 60px;
+	top: 0px;
+	position:fixed;
+}
+	#masthead nav ul {
+		margin-top: -20px;
+	}
+		#masthead nav ul li a {
+			display:block;
+			float:left;
+			padding: 17px 15px 8px;
+			text-decoration: none;
+			border-right: 1px solid #232323;
+		}
+			#masthead nav ul li a:hover {
+				background:#3f5f66;
+				border-right: 0px solid #232323;
+			}
+		#masthead nav ul li .icon-configure {
+			color: #eee;
+			font-size: 35px;
+			line-height: 35px;
+		}
+	
+.document
+{
+	font-family: "Montserrat";
+	background:#1c1c1c;
+	color: #fff;
+	border-bottom: 3px solid #3f5f66;
+}
+	.document header {
+		color: #fff;
+		font-weight: normal;
+		font-size: 16px;
+		margin-bottom: -10px;
+		padding-top: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	
+	.document menu {
+		position:absolute;
+		margin-left: -30px;
+		margin-top: 20px;
+	}
+		.document menu ol {
+			list-style:none;
+		}
+			.document menu ol li {
+				margin:0px;
+				float:left;
+			}
+				.document menu ol li.send a {
+					display:block;
+					background: #5a9aa8;
+					padding: 10px 8px 8px 13px;
+				}
+				.document menu ol li.approve a {
+					display:block;
+					background: #1f7f5c;
+					padding: 10px 8px 8px 13px;
+				}
+	.document .meta {
+		color: #636363;
+		font-size: 15px;
+		border-bottom: 1px solid #282828;
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+		.document .meta ul {
+			list-style:none;
+			margin-top: 15px;
+			padding-left: 0px;
+		}
+			.document .meta ul li {
+				margin:0px;
+			}
+				.document .meta ul li + li {
+					margin-top: 5px;
+				}
+				.document .meta ul li i {
+					color: #636363;
+					margin-right: 6px;
+					font-size: 20px;
+				}
+	.document .body {
+		margin-left: 20px;
+		margin-right: 20px;
+		border-bottom: 1px solid #282828;
+	}
+		.document .body p {
+			font-size: 13px;
+			line-height: 23px;
+			margin: 20px 0px;
+		}
+	.document .attending {
+		padding-left: 20px;	
+		padding-right: 20px;
+		padding-bottom: 10px;
+	}	
+		.document .attending p {
+			font-size: 13px;
+			margin: 20px 0px 10px;
+		}
+		
+		.document .attending img {
+			margin-right: 5px;
+			margin-bottom: 5px;
+			height: 40px;
+			width: 40px;
+		}
+
+.article {
+	position:relative;
+	font-weight: normal;
+	background: #fff;
+	padding: 20px;
+}
+	.article h1 {
+		font-family: "Helvetica Neue", "Helvetica";
+		font-weight: normal;
+	}
+
+.doc-section, header h1 {
+	outline: none;
+}
+
+#sidebar {
+	margin-top: 25px;
+	position:fixed;
+	background: #1c1c1c;
+	padding: 10px 20px 0px;
+}
+	#sidebar h3 {
+		font-size: 15px;
+		color: #fff;
+		font-family: "Montserrat";
+	}
+
+.new_doc {
+}
+
+[class^="icon-"] {
+	color: #fff;
+	margin-right: 3px;
+	display:inline-block;
+	font-family: 'Pictos Custom';
+	-webkit-font-smoothing: antialiased;
+	vertical-align: middle;
+	font-style: normal;
+	font-size: 25px;
+}
+
+[class^="icon-"]:last-child {
+	*margin-left: 0;
+}
