@@ -8,7 +8,7 @@ class DocV2 extends Theme
 		Format::apply( 'tag_and_list', 'post_tags_out' );
 		Format::apply_with_hook_params( 'more', 'post_content_out', 'more' );
 		Format::apply( 'autop', 'post_content_excerpt' );
-		Format::apply_with_hook_params( 'more', 'post_content_excerpt', '', 15, 1 );
+		Format::apply_with_hook_params( 'more', 'post_content_excerpt', '', 17, 0 );
 	}
 		
 	public function action_add_template_vars() {

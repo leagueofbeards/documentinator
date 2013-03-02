@@ -79,13 +79,16 @@ class DocumentsPlugin extends Plugin
 		if('document' == Post::type_name($document->get_raw_field('content_type'))) {
 			switch($name) {
 				case 'approval_summary' :
-					$out = $this->get_approval_summary(self::APPROVAL_TYPE_APPROVAL, $document);
+					$out = $this->get_approval_summary( self::APPROVAL_TYPE_APPROVAL, $document );
 				break;
 				case 'is_approved' :
-					$out = $this->check_approved(self::APPROVAL_TYPE_APPROVAL, $document);
+					$out = $this->check_approved( self::APPROVAL_TYPE_APPROVAL, $document );
 				break;
 				case 'approval_status' :
-					$out = $this->get_approvals(self::APPROVAL_TYPE_APPROVAL, $document);
+					$out = $this->get_approvals( self::APPROVAL_TYPE_APPROVAL, $document );
+				break;
+				case 'attached' :
+					$out = $this->get_approvers( $document->id );
 				break;
 			}
 		}
@@ -256,7 +259,7 @@ class DocumentsPlugin extends Plugin
 		foreach( $ids as $id ) {
 			$u_ids[] = $id->user_id;
 		}
-				
+
 		return Users::get( array('id' => $u_ids) );
 	}
 

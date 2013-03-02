@@ -28,7 +28,8 @@
 <header id="masthead">
 		<nav>
 			<ul>
-				<li><a href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>"><i class="icon-configure">g</i></a></li>
+				<li><a class="settings" href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>"><i class="icon-configure">g</i></a></li>
+				<li><a class="logo" href="<?php Site::out_url('habari'); ?>">Coworkspace</a></li>
 			</ul>
 		</nav>
 </header>

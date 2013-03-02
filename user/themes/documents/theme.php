@@ -8,7 +8,7 @@ class Doco extends Theme
 		Format::apply( 'tag_and_list', 'post_tags_out' );
 		Format::apply_with_hook_params( 'more', 'post_content_out', 'more' );
 		Format::apply( 'autop', 'post_content_excerpt' );
-		Format::apply_with_hook_params( 'more', 'post_content_excerpt', 'more',60, 1 );
+		Format::apply_with_hook_params( 'more', 'post_content_excerpt', '', 15, 1 );
 	}
 		
 	public function action_add_template_vars() {

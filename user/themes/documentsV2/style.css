@@ -10,17 +10,49 @@ body {
 	margin-top: 100px;
 }
 
+code {
+	font-family: Courier;
+	background: #eee;
+	border-radius: 3px;
+	padding: 3px;
+}
+
+pre code {
+	background: none;
+	border-radius: none;
+	padding: auto;
+}
+
+pre {
+	padding: 10px;
+	margin-bottom: 20px;
+	word-wrap: break-word;
+	white-space: pre-wrap; 		
+}
+
 #masthead {
 	background: #1c1c1c;
 	width: 100%;
 	height: 60px;
 	top: 0px;
 	position:fixed;
+	z-index: 100;
 }
 	#masthead nav ul {
 		margin-top: -20px;
 	}
-		#masthead nav ul li a {
+		#masthead nav ul li a.logo {
+			font-family: "Montserrat";
+			text-transform: uppercase; 
+			font-size: 20px;
+			display:block;
+			float:left;
+			padding: 20px 15px 21px;
+			text-decoration: none;
+			color: #fff;
+		}
+	
+		#masthead nav ul li a.settings {
 			display:block;
 			float:left;
 			padding: 17px 15px 8px;
@@ -29,7 +61,7 @@ body {
 		}
 			#masthead nav ul li a:hover {
 				background:#3f5f66;
-				border-right: 0px solid #232323;
+				border-right: 1px solid #1c1c1c;
 			}
 		#masthead nav ul li .icon-configure {
 			color: #eee;
@@ -43,6 +75,7 @@ body {
 	background:#1c1c1c;
 	color: #fff;
 	border-bottom: 3px solid #3f5f66;
+	margin-bottom: 20px;
 }
 	.document header {
 		color: #fff;
@@ -53,7 +86,10 @@ body {
 		padding-left: 20px;
 		padding-right: 20px;
 	}
-	
+		.document header a {
+			color: #fff;
+			text-decoration: none;
+		}
 	.document menu {
 		position:absolute;
 		margin-left: -30px;
@@ -122,8 +158,8 @@ body {
 		.document .attending img {
 			margin-right: 5px;
 			margin-bottom: 5px;
-			height: 40px;
-			width: 40px;
+			height: 39px;
+			width: 39px;
 		}
 
 .article {
@@ -131,8 +167,10 @@ body {
 	font-weight: normal;
 	background: #fff;
 	padding: 20px;
+	margin-bottom: 40px;
+	min-height: 500px;
 }
-	.article h1 {
+	.article h1, .article h2, .article h3, .article h4 , .article h5 {
 		font-family: "Helvetica Neue", "Helvetica";
 		font-weight: normal;
 	}
@@ -141,18 +179,102 @@ body {
 	outline: none;
 }
 
+.doc-section p {
+	line-height: 23px;
+}
+
 #sidebar {
 	margin-top: 25px;
+	margin-left: -60px;
 	position:fixed;
-	background: #1c1c1c;
-	padding: 10px 20px 0px;
+ 	background: #1c1c1c;
+	padding: 15px 15px 0px;
 }
+	#sidebar a {
+		color: #fff;
+		text-decoration: none;
+	}
+	
 	#sidebar h3 {
-		font-size: 15px;
+		font-size: 17px;
+		line-height: 20px;
 		color: #fff;
 		font-family: "Montserrat";
+		padding-bottom: 10px;
+		border-bottom: 1px solid #282828;
 	}
 
+	#sidebar h5 {
+		font-size: 17px;
+		line-height: 20px;
+		color: #fff;
+		font-family: "Montserrat";
+		padding-top: 10px;
+		border-top: 1px solid #282828;
+	}
+	
+	#sidebar #pages {
+		margin: 20px 0px;
+	}	
+		#sidebar #pages li i {
+			color: #eee;
+		}
+		
+		#sidebar #pages li a {
+			color: #fff;
+			font-weight: bold;
+			text-decoration: none;
+		}
+		#participating li {
+			float: left;
+			width: 100%;
+			padding: 15px 0px 15px 0px;
+			margin: 0px;
+		}
+
+		#participating li + li {
+			border-top: 1px solid #282828;
+		}
+
+		#participating .gravatar {
+			float:left;
+			border-radius: 3px;
+			width: 20px;
+			height: 20px;
+			margin-right: 10px;
+		}
+		
+		.controls {
+			float: right;
+		}
+			.controls i {
+				font-size: 13px;
+				color: #ccc;
+				font-weight:normal;
+			}
+				.controls i:hover {
+					color: #aaa !important;
+					cursor: pointer;
+				}
+				
+				.controls i.approved {
+					color: #008100;
+					cursor:default;
+				}
+				
+				.controls i.denied {
+					color: #830000;
+					cursor:auto;
+				}
+				
+				.controls i.bigger {
+					font-size: 15px;
+					padding-right: 2px;
+					cursor:auto;
+					color: #aaa;
+				}
+
+		
 .new_doc {
 }
 
