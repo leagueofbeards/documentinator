@@ -60,7 +60,7 @@ pre {
 			border-right: 1px solid #232323;
 		}
 			#masthead nav ul li a:hover {
-				background:#3f5f66;
+				background: #3f5f66;
 				border-right: 1px solid #1c1c1c;
 			}
 		#masthead nav ul li .icon-configure {
@@ -216,22 +216,41 @@ pre {
 	#sidebar #pages {
 		margin: 20px 0px;
 	}	
+		#sidebar #pages li {
+			margin-bottom: 5px;
+		}
+		
 		#sidebar #pages li i {
 			color: #eee;
 		}
 		
 		#sidebar #pages li a {
 			color: #fff;
+			padding: 3px;
+			display:block;
 			font-weight: bold;
 			text-decoration: none;
 		}
+			#sidebar #pages li a:hover {
+				display:block;
+				background: #3f5f66;
+			}
+			
 		#participating li {
 			float: left;
 			width: 100%;
 			padding: 15px 0px 15px 0px;
 			margin: 0px;
+			color: #fff;
 		}
-
+			#participating li strong {
+				color: #fff;
+			}
+			
+			#participating li .grey {
+				opacity: 0.25;
+			}
+			
 		#participating li + li {
 			border-top: 1px solid #282828;
 		}
