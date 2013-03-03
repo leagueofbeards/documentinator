@@ -7,9 +7,18 @@
 <meta name="robots" content="index, follow">
 
 <link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/style.css" media="screen" type="text/css">
+<link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/css/bootstrap.css" media="screen" type="text/css">
+<link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/css/humanmsg.css" media="screen" type="text/css">
+<link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/css/annotator.min.css" media="screen" type="text/css">
 <link href="//get.pictos.cc/fonts/2135/10" rel="stylesheet" type="text/css">
               
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/bootstrap.min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/html5.wyswyg.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/humanmsg.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/underscore.min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/annotator.full-min.js"></script>
+<script src="<?php Site::out_url('theme'); ?>/js/annotator.avatar.js"></script>
 
 <script>
 	if ( typeof(DI) == "undefined" ) { DI = {}; }
@@ -26,11 +35,11 @@
 </head>
 <body>
 <header id="masthead">
-		<nav>
-			<ul>
-				<li><a class="settings" href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>"><i class="icon-configure">g</i></a></li>
-				<li><a class="logo" href="<?php Site::out_url('habari'); ?>">Coworkspace</a></li>
-			</ul>
-		</nav>
+	<nav>
+		<ul>
+			<li><a class="settings" href="<?php URL::out('display_useraccount', array('slug' => $user->username)); ?>"><i class="icon-configure">g</i></a></li>
+			<li><a class="logo" href="<?php Site::out_url('habari'); ?>">Coworkspace</a></li>
+		</ul>
+	</nav>
 </header>
 <div class="container">

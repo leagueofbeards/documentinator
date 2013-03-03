@@ -10,7 +10,8 @@ $(document).ready(function() {
 	styleCode();
 	setupPermissions();
 	annotate();
-
+	highlight();
+	
 	$('#intro').click(function() {
 		if( $(this).attr('contenteditable') === 'false' ) {
 			annotate();
@@ -267,3 +268,12 @@ var annotate = function() {
 			loaded = true;
 	}
 }
+
+var highlight = function() {
+	var str = location.href.toLowerCase();
+	$('#pages li a').each(function() {
+		if( str.indexOf(this.href.toLowerCase()) > -1 ) {
+			$(this).addClass('selected');
+		}
+	});
+};

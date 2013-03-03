@@ -17,7 +17,7 @@
 		<h5>Approvals <?php if( $document->author->id == $user->id ) { ?><?php if( $document->is_approved == false ) { ?><i class="icon-add" id="add_contributor"><a href="#new_approv_form" role="button" data-toggle="modal">a</a></i><?php } ?><?php } ?></h5>
 		<?php if( $document->is_approved == false ) { ?>
 			<?php if( $document->author->id == $user->id ) { ?>
-			<form id="invite_submit" style="display:none;margin-bottom:0px;margin-left:-1px;" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'add_approver', 'id' => $document->id))); ?>">
+			<form id="invite_submit" style="display:none;" action="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'add_approver', 'id' => $document->id))); ?>">
 				<input type="text" name="invitee" id="invitee" placeholder="email@site.com" style="width:147px;">
 			</form>
 			<?php } ?>

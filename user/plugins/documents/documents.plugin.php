@@ -102,6 +102,25 @@ class DocumentsPlugin extends Plugin
 		return $rules;
 	}
 
+	public static function check_approvals($person, $document) {
+		$approv = 0;
+		$count = Pages::get( array('document_id' => $document->id, 'count' => true) );
+		$pages = Pages::get( array('document_id' => $document->id) );
+				
+		foreach( $pages as $page ) {
+			$approved = DB::get_column( "SELECT id FROM {approvals} WHERE user_id = ? AND post_id = ?", array($person->id, $page->id) );
+			if( $approved ) {
+				$approv++;
+			}
+		}
+		
+		if( $approv == $count ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	private function check_approved($approval_type, $document) {
 		$ids = array();
 		$p_count = Pages::get( array('document_id' => $document->id, 'count' => true) );

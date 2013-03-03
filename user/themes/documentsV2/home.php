@@ -9,11 +9,15 @@
 			<header><a href="<?php echo $doc->permalink; ?>"><?php echo $doc->title; ?></a></header>
 			<div class="meta">
 				<ul>
-					<li class="when"><i class="icon-time">T</i><?php echo DateTime::create( $doc->updated )->friendly(1); ?></li>
+					<?php if( $doc->is_approved ) { ?>
+						<li class="when"><i class="icon-time">T</i>Finished <?php echo DateTime::create( $doc->updated )->friendly(1); ?></li>
+					<?php } else { ?>
+						<li class="when"><i class="icon-time">T</i>Started <?php echo DateTime::create( $doc->updated )->friendly(1); ?></li>					
+					<?php } ?>
 				</ul>
 			</div>
 			<div class="body">
-				<p><?php echo strip_tags($doc->content_excerpt); ?></p>
+				<p><?php echo strip_tags( $doc->content_excerpt ); ?></p>
 			</div>
 			<div class="attending">
 				<p>Participating</p>

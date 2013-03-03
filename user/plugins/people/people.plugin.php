@@ -95,7 +95,7 @@ class People extends Plugin
 		$ar->html( '#participating', '#' );
 		$ar->out();
 	}
-
+	
 	public function action_auth_ajax_update_approver($data) {
 		$vars = $data->handler_vars;
 		$user = User::get_by_id( $vars['id'] );
