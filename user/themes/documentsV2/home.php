@@ -6,6 +6,11 @@
 		<?php foreach( $docs as $doc ) { ?>
 		<div class="five columns">
 			<div class="document columns five">
+				<div class="hover_controls">
+					<span class="invite_control"><i class="icon-invite">f</i></span>
+					<span class="close_control"><i class="icon-close">C</i></span>
+					<span class="edit_control"><i class="icon-edit">E</i></span>
+				</div>
 				<header><a href="<?php echo $doc->permalink; ?>"><?php echo $doc->title; ?></a></header>
 				<div class="meta">
 					<ul>

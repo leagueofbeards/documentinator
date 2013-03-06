@@ -12,6 +12,12 @@ $(document).ready(function() {
 	annotate();
 	highlight();
 	
+	$('.document').hover(function() {
+		$(this).find( '.hover_controls' ).fadeIn();
+	}, function() {
+		$(this).find( '.hover_controls' ).fadeOut();
+	});
+	
 	$('#intro').click(function() {
 		if( $(this).attr('contenteditable') === 'false' ) {
 			annotate();
