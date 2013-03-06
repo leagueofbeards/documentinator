@@ -177,23 +177,19 @@ class AnnotatePlugin extends Plugin
 		echo $annotation;
 	}
 
-	public function rest_get_v1_read_annotations($params) {
+	public function rest_get_v1_read_annotations__postid($params) {
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
 		$return = array();
 		$rows = array();
-				
-		switch( count($bits) ) {
-			case 6 :
-				$doc = array_pop($bits);
-				$prefix = array_pop($bits);
-				$post = Document::get( array('slug' => $doc) );
+
+		$obj = Post::get( array('id' => $params['postid']) );
+
+		switch( $obj->content_type ) {
+			case Post::type( 'document' ) :
+				$post = Document::get( array('id' => $params['postid']) );
 			break;
-			case 7 :
-				$pge = array_pop($bits);
-				$doc = array_pop($bits);
-				$document = Document::get( array('slug' => $doc) );
-				$prefix = array_pop($bits);
-				$post = Page::get( array('slug' => $pge, 'document_id' => $document->id) );
+			case Post::type( 'page' ) :
+				$post = Page::get( array('id' => $params['postid']) );
 			break;
 		}
 		
