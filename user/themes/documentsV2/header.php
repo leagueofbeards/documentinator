@@ -5,6 +5,7 @@
 <title><?php Options::out('title'); ?> &raquo; <?php echo $theme->title; ?></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/style.css" media="screen" type="text/css">
 <link rel="stylesheet" href="<?php Site::out_url('theme'); ?>/css/bootstrap.css" media="screen" type="text/css">
