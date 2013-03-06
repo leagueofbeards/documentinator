@@ -10,6 +10,14 @@ body {
 	margin-top: 100px;
 }
 
+b {
+	font-weight: bold;
+}
+
+i {
+	font-style: italic;
+}
+
 code {
 	font-family: Courier;
 	background: #eee;
@@ -41,13 +49,13 @@ pre {
 #masthead {
 	background: #1c1c1c;
 	width: 100%;
-	height: 60px;
+	height: 50px;
 	top: 0px;
-	position:fixed;
+	position:absolute;
 	z-index: 100;
 }
 	#masthead nav ul {
-		margin-top: -20px;
+		margin-top: -25px;
 	}
 		#masthead nav ul li a.logo {
 			font-family: "Montserrat";
@@ -55,7 +63,7 @@ pre {
 			font-size: 20px;
 			display:block;
 			float:left;
-			padding: 20px 15px 21px;
+			padding: 20px 15px 16px;
 			text-decoration: none;
 			color: #fff;
 		}
@@ -63,7 +71,7 @@ pre {
 		#masthead nav ul li a.settings {
 			display:block;
 			float:left;
-			padding: 17px 15px 8px;
+			padding: 17px 15px 3px;
 			text-decoration: none;
 			border-right: 1px solid #232323;
 		}
@@ -85,6 +93,18 @@ pre {
 	border-bottom: 3px solid #3f5f66;
 	margin-bottom: 20px;
 }
+	.document .configure {
+		float:right;
+		margin: 5px;
+		text-align:center;
+		width: 30px;
+		height: 30px;
+	}
+		.document .configure i {
+			font-size: 20px;
+			line-height: 35px;
+		}
+	
 	.document header {
 		color: #fff;
 		font-weight: normal;
@@ -155,7 +175,7 @@ pre {
 		}
 	.document .attending {
 		padding-left: 20px;	
-		padding-right: 20px;
+		padding-right: 10px;
 		padding-bottom: 10px;
 	}	
 		.document .attending p {
@@ -164,7 +184,6 @@ pre {
 		}
 		
 		.document .attending img {
-			margin-right: 5px;
 			margin-bottom: 5px;
 			height: 39px;
 			width: 39px;
@@ -198,7 +217,7 @@ pre {
 }
 	#sidebar nav {
 		width: 220px;
-		position: fixed;
+		position: absolute;
 		background: #1c1c1c;
 		padding: 15px 15px 0px;		
 	}
@@ -354,6 +373,130 @@ pre {
 	width: 207px;
 }
 
+#editor {
+	display: none;
+	z-index: 1;
+	background: #1c1c1c;
+	position:fixed;
+	margin-left: 760px;
+	margin-top: 130px;
+	width: 35px;
+	height: auto;
+	border: 1px solid #111;
+}
+	#editor.create {
+		display:block !important;
+	}
+		
+	#editor a, #editor a:visited {
+		color: #fff;
+		text-decoration: none;
+		display:block;
+		padding: 5px;
+		text-align: center;
+	}
+		#editor a strong {
+			color: #fff;
+		}
+		
+		#editor a:hover {
+			background: #3f5f66;
+		}
+		
+		#editor #italic {
+			padding-left: 0px;
+		}
+		
+		#editor a i {
+			padding-left: 2px;
+		}
+
+	#submenu {
+		display:none;
+		position:fixed;
+		margin-left: 40px;
+		margin-top: -33px;
+		background: #1c1c1c;
+		padding: 0px;
+		height: auto;
+		border: 1px solid #111;
+	}
+		#submenu ul {
+			margin-bottom: 0px;
+			padding-bottom:0px;
+		}
+			#submenu ul li {
+				margin-bottom:0px;
+			}
+			
+		#submenu a {
+			padding: 5px 5px;
+			margin:0px;
+		}
+		#submenu a:hover {
+			background: #3f5f66;
+		}
+		
+		.heading a:hover a#heading {
+			background: #3f5f66;
+		}
+
+	#save {
+		position:fixed;
+		margin-top: 90px;
+		margin-left: 755px;
+		background: #1c1c1c;
+		border: 1px solid #111;
+	}
+		#save a {
+			text-decoration: none;
+			display:block;
+			padding: 7px 6px 3px 12px;
+			text-align: center;
+			background:#1c1c1c;
+		}
+			#save a.update {
+				padding: 7px 4px 3px 12px;
+			}
+		#save a:hover {
+			background: #3f5f66;				
+		}
+
+		#save.enabled {
+			background: #3f5f66;
+		}
+			.enabled a:hover {
+				background: #3f5f66 !important;
+			}
+		
+		#editor .icon-save {
+			color: #fff;
+			height: 18px;
+		}
+
+	#new_page {
+		position:fixed;
+		margin-left: 758px;
+		margin-top: 30px;
+		background: #1c1c1c;
+		border: 1px solid #111;
+	}
+		#new_page a {
+		text-decoration: none;
+		display:block;
+		padding: 5px;
+		text-align: center;
+		background:#1c1c1c;
+	}
+		#new_page a:hover {
+			background: #3f5f66;
+		}
+		
+		#new_page a i {
+			padding-top: 4px;
+			padding-left: 4px;
+		}
+
 [class^="icon-"] {
 	color: #fff;
 	margin-right: 3px;
@@ -368,3 +511,25 @@ pre {
 [class^="icon-"]:last-child {
 	*margin-left: 0;
 }
+
+.person {
+	float:left;
+	margin-right: 11px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+	.person .status {
+		position:absolute;
+		margin-left: -8px;
+		margin-top: -8px;
+		background: #3f5f66;
+		border-radius: 20px;
+		width: 22px;
+		height: 22px;
+		text-align: center;
+	}
+		.person .status i {
+			padding-top: 2px;
+			padding-left:1px;
+			font-size: 15px;
+		}

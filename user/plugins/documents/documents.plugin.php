@@ -108,7 +108,7 @@ class DocumentsPlugin extends Plugin
 		$pages = Pages::get( array('document_id' => $document->id) );
 				
 		foreach( $pages as $page ) {
-			$approved = DB::get_column( "SELECT id FROM {approvals} WHERE user_id = ? AND post_id = ?", array($person->id, $page->id) );
+			$approved = DB::get_column( "SELECT id FROM {approvals} WHERE user_id = ? AND post_id = ? AND approval_status = ?", array($person->id, $page->id, self::APPROVAL_STATUS_APPROVED) );
 			if( $approved ) {
 				$approv++;
 			}

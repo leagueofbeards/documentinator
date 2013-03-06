@@ -43,6 +43,7 @@ $(document).ready(function() {
 			obj.content = content;
 			obj.title = title;
 			var url = $('.inplace').attr('action');
+			console.log( content );
 			$.post( url, obj, handleResponse  );
 
 			styleCode();
