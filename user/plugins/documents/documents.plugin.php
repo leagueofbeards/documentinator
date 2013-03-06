@@ -109,11 +109,11 @@ class DocumentsPlugin extends Plugin
 				
 		foreach( $pages as $page ) {
 			$approved = DB::get_column( "SELECT id FROM {approvals} WHERE user_id = ? AND post_id = ? AND approval_status = ?", array($person->id, $page->id, self::APPROVAL_STATUS_APPROVED) );
-			if( $approved ) {
+			if( $approved[0] ) {
 				$approv++;
 			}
 		}
-		
+				
 		if( $approv == $count ) {
 			return true;
 		} else {

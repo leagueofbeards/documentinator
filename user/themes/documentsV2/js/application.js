@@ -9,8 +9,13 @@ var loaded = false;
 $(document).ready(function() {
 	styleCode();
 	setupPermissions();
+	setupInvites();
 	annotate();
 	highlight();
+	
+	$('.invite_control').click(function() {
+		return false;
+	});
 	
 	$('.document').hover(function() {
 		$(this).find( '.hover_controls' ).fadeIn();
@@ -245,6 +250,20 @@ var setupPermissions = function(user) {
 		if( user != null && $(this).attr('id') == 'user-' + user ) {
 			$(this).trigger('click');
 		}
+	});
+}
+
+var setupInvites = function(user) {
+	$('.invite_control').each(function() {
+		var url = $(this).data('url');
+		$(this).popover({
+			animation: true,
+			title: 'Add a new Person',
+			html: true,
+			content: '<p style="color:#333;font-size:12px;margin-bottom:0px;">Give us an email address, and we\'ll take care of the rest.</p><form style="display:block;" id="invite_submit" style="margin-top:0px;"><input type="text" name="invitee" id="invitee" style="width:193px;background:#fff;border-color:#ccc;" name="invitee" id="invitee" placeholder="email@site.com"></form>',
+			placement: 'bottom',
+			trigger: 'click',
+		});
 	});
 }
 

@@ -8,7 +8,7 @@ class Document extends Post
 		$post->insert();
 		return $post;
 	}
-	
+		
 	public static function get($paramarray = array()) {
 		$defaults = array(
 			'content_type' => 'document',
