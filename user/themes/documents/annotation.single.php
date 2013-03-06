@@ -54,4 +54,8 @@
 		</div>
 	</div>
 </div>
+<script>
+	DI.page = "<?php echo $annotation->permalink; ?>";
+	DI.page_id = "<?php echo $annotation->id; ?>";
+</script>
 <?php $theme->display('footer'); ?>

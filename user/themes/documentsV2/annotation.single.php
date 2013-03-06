@@ -55,7 +55,7 @@
 	</div>
 </div>
 <script>
-	DI.page = "<?php URL::out('display_docpage', array('slug' => $document->slug, 'page' => $page->slug) ); ?>";
-	DI.page_id = "<?php echo $page->id; ?>";
+	DI.page = "<?php echo $annotation->permalink; ?>";
+	DI.page_id = "<?php echo $annotation->id; ?>";
 </script>
 <?php $theme->display('footer'); ?>

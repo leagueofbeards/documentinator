@@ -280,9 +280,9 @@ var annotate = function() {
 			prefix: DI.url + '/v1',
 			urls: {
 				create:  '/create/annotation',
-				read:    '/read/annotations/' + DI.post_id,
-				update:  '/update/annotation/' + DI.post_id,
-				destroy: '/destroy/annotation/' + DI.post_id
+				read:    '/read/annotations/' + DI.page_id,
+				update:  '/update/annotation/' + DI.page_id,
+				destroy: '/destroy/annotation/' + DI.page_id
 			}
 		}
 	}

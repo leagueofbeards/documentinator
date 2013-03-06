@@ -193,26 +193,31 @@ class AnnotatePlugin extends Plugin
 			break;
 		}
 		
-		$count = Annotations::get( array('connection_id' => $post->id, 'count' => true, 'ignore_permissions' => true) );
-		$annotations = Annotations::get( array('connection_id' => $post->id, 'ignore_permissions' => true) );
-
-		foreach( $annotations as $annotation ) {
-			$person = User::get_by_id( $annotation->user_id );
-			$ranges = json_decode( $annotation->ranges );
-			$row = array();
-			$row['uri'] = $annotation->url;
-			$row['updated'] = $annotation->updated;			
-			$row['id'] = $annotation->id;
-			$row['links'][] = array( 'rel' => 'alternate', 'href' => URL::get('display_annotation', array('slug' => $annotation->slug)), 'type' => 'text/html' );
-			$row['quote'] = $annotation->content;			
-			$row['ranges'] = unserialize($annotation->ranges);
-			$row['created'] = $annotation->created;
-			$row['consumer'] = 'coworkspace';
-			$row['text'] = $annotation->text;
-			$row['user'] = $person->displayname;
-			$row['avatar'] = Gravatar::get( $person->email );
-			
-			$rows[] = $row;
+		if( $post ) {				
+			$count = Annotations::get( array('connection_id' => $post->id, 'count' => true, 'ignore_permissions' => true) );
+			$annotations = Annotations::get( array('connection_id' => $post->id, 'ignore_permissions' => true) );
+	
+			foreach( $annotations as $annotation ) {
+				$person = User::get_by_id( $annotation->user_id );
+				$ranges = json_decode( $annotation->ranges );
+				$row = array();
+				$row['uri'] = $annotation->url;
+				$row['updated'] = $annotation->updated;			
+				$row['id'] = $annotation->id;
+				$row['links'][] = array( 'rel' => 'alternate', 'href' => URL::get('display_annotation', array('slug' => $annotation->slug)), 'type' => 'text/html' );
+				$row['quote'] = $annotation->content;			
+				$row['ranges'] = unserialize($annotation->ranges);
+				$row['created'] = $annotation->created;
+				$row['consumer'] = 'coworkspace';
+				$row['text'] = $annotation->text;
+				$row['user'] = $person->displayname;
+				$row['avatar'] = Gravatar::get( $person->email );
+				
+				$rows[] = $row;
+			}
+		} else {
+			$count = 0;
+			$rows = array();
 		}
 		
 		$return['total'] = intval($count);
