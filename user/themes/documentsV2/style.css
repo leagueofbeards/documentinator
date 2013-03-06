@@ -538,15 +538,22 @@ pre {
 	position: absolute;
 	margin-top: 75px;
 	margin-left: 33px;
-	width: 195px;
+	width: 193px;
 	padding: 20px 10px 20px 10px;
 	background: #3f5f66;
 }
 	.hover_controls span {
 		float:left;
-		margin: 10px 15px 0px 15px;
+		margin: 0px 10px;
 	}
 	
 	.hover_controls i {
-		font-size: 40px;
+		padding: 7px 7px 0px 7px;
+		font-size: 35px;
+		line-height: 38px;
 	}
+		.hover_controls i:hover {
+			background: #fff;
+			color:#3f5f66;
+			border-radius: 5px;
+		}
