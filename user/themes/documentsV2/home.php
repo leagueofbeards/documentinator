@@ -6,11 +6,6 @@
 		<?php foreach( $docs as $doc ) { ?>
 		<div class="five columns">
 			<div class="document columns five">
-				<div class="hover_controls">
-					<span class="invite_control"><a href="<?php URL::out('auth_ajax', Utils::WSSE(array('context' => 'add_approver', 'id' => $document->id))); ?>" title="Add a new user"><i class="icon-invite">p</i></a></span>
-					<span class="close_control"><a href="" title=""><i class="icon-close">c</i></a></span>
-					<span class="edit_control"><a href="<?php echo $doc->permalink; ?>" title="Edit <?php echo $doc->title; ?>"><i class="icon-edit">E</i></a></span>
-				</div>
 				<header><a href="<?php echo $doc->permalink; ?>"><?php echo $doc->title; ?></a></header>
 				<div class="meta">
 					<ul>

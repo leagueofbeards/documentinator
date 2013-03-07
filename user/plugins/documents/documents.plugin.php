@@ -24,6 +24,7 @@ class DocumentsPlugin extends Plugin
 	public function action_plugin_activation( $plugin_file ) {
 		Post::add_new_type( 'document' );
 		$this->create_documents_table();
+		$this->create_approvals_table();
 	}
 
 	public function action_plugin_deactivation ( $file='' ) {}
@@ -41,6 +42,21 @@ class DocumentsPlugin extends Plugin
 				) DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;";
 
 		DB::dbdelta($sql);
+	}
+
+	private function create_approvals_table() {
+		$sql = "CREATE TABLE `docs__approvals` (
+		  id int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  post_id int(11) NOT NULL,
+		  user_id int(11) unsigned NOT NULL,
+		  approval_type tinyint(4) unsigned NOT NULL DEFAULT '0',
+		  approval_date int(11) unsigned DEFAULT NULL,
+		  approval_status tinyint(4) NOT NULL DEFAULT '0',
+		  PRIMARY KEY (`id`),
+		  KEY `docs__approvals` (`post_id`,`approval_type`,`approval_status`)
+  		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;";
+  		
+  		DB::dbdelta($sql);
 	}
 
 	private function create_user_documents_table() {
@@ -346,7 +362,7 @@ class DocumentsPlugin extends Plugin
 	public function action_auth_ajax_save_rendered_content($data) {
 		$vars = $data->handler_vars;
 		$post = Post::get( array('id' => $vars['page_id']) );
-		$post->cached_content = $vars['content'];
+		$post->cached_content = $_POST->raw('content');
 		$post->update();
 	}
 			
