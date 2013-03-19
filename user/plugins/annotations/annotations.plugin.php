@@ -239,7 +239,7 @@ class AnnotatePlugin extends Plugin
 		$user = User::identify();
 		$payload = file_get_contents( 'php://input' );
 		$payload = json_decode($payload);
-		$id = rand() . time();		
+		$id = rand() . time();
 		$bits = explode('/', $_SERVER['HTTP_REFERER']);
 				
 		switch( count($bits) ) {
